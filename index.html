@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Quick Marketing Discovery — Jamal Samuel Marketing Intel Lab</title>
+<meta name="description" content="A 2-3 minute marketing discovery for small business owners. Answer a few quick questions and send straight to WhatsApp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F5F6F3;
+    --paper-raised:#FFFFFF;
+    --ink:#161A20;
+    --ink-soft:#565F6E;
+    --ink-faint:#8992A0;
+    --line:#DEE2DD;
+    --line-strong:#C7CCC6;
+    --accent:#0F6E5C;
+    --accent-dark:#0B5245;
+    --accent-tint:#E5F1ED;
+    --signal:#C9932B;
+    --error:#B3432E;
+    --error-tint:#FBEDE9;
+    --radius:10px;
+    --radius-lg:16px;
+    --shadow-sm:0 1px 2px rgba(22,26,32,0.05);
+    --shadow-md:0 10px 30px -14px rgba(22,26,32,0.22);
+    --font-display:'Fraunces', Georgia, serif;
+    --font-body:'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --font-mono:'IBM Plex Mono', ui-monospace, monospace;
+    --maxw:640px;
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  img,svg{display:block;max-width:100%;}
+  button{font-family:inherit;}
+
+  a{color:var(--accent-dark);}
+
+  :focus-visible{
+    outline:2px solid var(--accent);
+    outline-offset:2px;
+    border-radius:4px;
+  }
+
+  .sr-only{
+    position:absolute;width:1px;height:1px;padding:0;margin:-1px;
+    overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
+  }
+
+  /* ---------- Shell ---------- */
+  .app{
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+  }
+
+  .topbar{
+    position:sticky;
+    top:0;
+    z-index:20;
+    background:rgba(245,246,243,0.92);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar-inner{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:18px 20px 14px;
+  }
+  .brandrow{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    gap:12px;
+    margin-bottom:14px;
+  }
+  .brandmark{
+    display:flex;
+    align-items:center;
+    gap:9px;
+  }
+  .brandmark .dot{
+    width:9px;height:9px;border-radius:50%;
+    background:var(--accent);
+    box-shadow:0 0 0 3px var(--accent-tint);
+    flex-shrink:0;
+  }
+  .brandmark span{
+    font-family:var(--font-mono);
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+  }
+  .steplabel{
+    font-family:var(--font-mono);
+    font-size:12px;
+    font-weight:600;
+    letter-spacing:0.04em;
+    color:var(--ink-faint);
+    white-space:nowrap;
+  }
+
+  /* Signal meter — signature element */
+  .signal{
+    display:flex;
+    gap:4px;
+  }
+  .signal .seg{
+    height:5px;
+    flex:1;
+    background:var(--line-strong);
+    border-radius:2px;
+    position:relative;
+    overflow:hidden;
+    transition:background 0.35s ease;
+  }
+  .signal .seg.filled{background:var(--accent);}
+  .signal .seg.current::after{
+    content:"";
+    position:absolute;inset:0;
+    background:var(--signal);
+    animation:pulse 1.6s ease-in-out infinite;
+  }
+  @keyframes pulse{
+    0%,100%{opacity:0.35;}
+    50%{opacity:0.9;}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .signal .seg.current::after{animation:none;opacity:0.7;}
+  }
+
+  /* ---------- Stage ---------- */
+  .stage{
+    flex:1;
+    max-width:var(--maxw);
+    width:100%;
+    margin:0 auto;
+    padding:28px 20px 140px;
+  }
+
+  .step{display:none;}
+  .step.active{display:block;animation:rise 0.32s ease both;}
+  @keyframes rise{
+    from{opacity:0;transform:translateY(8px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .step.active{animation:none;}
+  }
+
+  .step-eyebrow{
+    font-family:var(--font-mono);
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--accent-dark);
+    margin:0 0 10px;
+  }
+  .step-title{
+    font-family:var(--font-display);
+    font-size:clamp(24px,5vw,30px);
+    font-weight:600;
+    letter-spacing:-0.01em;
+    line-height:1.2;
+    margin:0 0 10px;
+    color:var(--ink);
+  }
+  .step-sub{
+    font-size:15px;
+    color:var(--ink-soft);
+    margin:0 0 28px;
+    max-width:52ch;
+  }
+
+  .field{margin-bottom:22px;}
+  .field label.fieldlabel{
+    display:block;
+    font-size:13.5px;
+    font-weight:600;
+    color:var(--ink);
+    margin-bottom:7px;
+  }
+  .field .hint{
+    font-size:12.5px;
+    color:var(--ink-faint);
+    margin-top:6px;
+  }
+  .req::after{
+    content:" *";
+    color:var(--accent-dark);
+  }
+  .opt-tag{
+    font-family:var(--font-mono);
+    font-size:10.5px;
+    font-weight:500;
+    letter-spacing:0.03em;
+    text-transform:uppercase;
+    color:var(--ink-faint);
+    margin-left:6px;
+  }
+
+  input[type="text"],
+  input[type="url"],
+  textarea{
+    width:100%;
+    font-family:var(--font-body);
+    font-size:16px;
+    color:var(--ink);
+    background:var(--paper-raised);
+    border:1.5px solid var(--line-strong);
+    border-radius:var(--radius);
+    padding:13px 14px;
+    transition:border-color 0.15s ease, box-shadow 0.15s ease;
+  }
+  input[type="text"]:focus,
+  input[type="url"]:focus,
+  textarea:focus{
+    border-color:var(--accent);
+    box-shadow:0 0 0 3px var(--accent-tint);
+    outline:none;
+  }
+  textarea{resize:vertical;min-height:88px;}
+
+  .field.error input,
+  .field.error textarea{
+    border-color:var(--error);
+  }
+  .field.error .fielderr{
+    display:flex;
+  }
+  .fielderr{
+    display:none;
+    align-items:center;
+    gap:6px;
+    font-size:12.5px;
+    color:var(--error);
+    margin-top:7px;
+    font-weight:500;
+  }
+  .fielderr svg{flex-shrink:0;width:14px;height:14px;}
+
+  /* ---------- Choice cards (single select) ---------- */
+  .cardgrid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:9px;
+  }
+  @media (min-width:520px){
+    .cardgrid.two-col{grid-template-columns:1fr 1fr;}
+  }
+
+  .choice{
+    position:relative;
+  }
+  .choice input{
+    position:absolute;
+    opacity:0;
+    width:1px;height:1px;
+  }
+  .choice label{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:14px 16px;
+    background:var(--paper-raised);
+    border:1.5px solid var(--line);
+    border-radius:var(--radius);
+    cursor:pointer;
+    font-size:14.5px;
+    font-weight:500;
+    color:var(--ink);
+    transition:border-color 0.15s ease, background 0.15s ease, box-shadow 0.15s ease;
+    min-height:52px;
+  }
+  .choice label:hover{border-color:var(--line-strong);}
+  .choice input:focus-visible + label{
+    outline:2px solid var(--accent);
+    outline-offset:2px;
+  }
+  .choice .indicator{
+    flex-shrink:0;
+    width:18px;height:18px;
+    border-radius:50%;
+    border:1.5px solid var(--line-strong);
+    display:flex;align-items:center;justify-content:center;
+    transition:border-color 0.15s ease, background 0.15s ease;
+  }
+  .choice input[type="checkbox"] + label .indicator{border-radius:5px;}
+  .choice .indicator svg{
+    width:11px;height:11px;
+    opacity:0;
+    transform:scale(0.6);
+    transition:opacity 0.15s ease, transform 0.15s ease;
+  }
+  .choice input:checked + label{
+    border-color:var(--accent);
+    background:var(--accent-tint);
+    box-shadow:var(--shadow-sm);
+  }
+  .choice input:checked + label .indicator{
+    background:var(--accent);
+    border-color:var(--accent);
+  }
+  .choice input:checked + label .indicator svg{
+    opacity:1;
+    transform:scale(1);
+  }
+  .choice input:disabled + label{
+    opacity:0.45;
+    cursor:not-allowed;
+  }
+
+  .conditional{
+    margin-top:12px;
+    display:none;
+  }
+  .conditional.show{display:block;}
+
+  /* ---------- Controls ---------- */
+  .controlbar{
+    position:fixed;
+    left:0;right:0;bottom:0;
+    z-index:20;
+    background:rgba(245,246,243,0.94);
+    backdrop-filter:blur(8px);
+    border-top:1px solid var(--line);
+  }
+  .controlbar-inner{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:14px 20px calc(14px + env(safe-area-inset-bottom));
+    display:flex;
+    gap:10px;
+    align-items:center;
+  }
+  .btn{
+    font-family:var(--font-body);
+    font-size:15px;
+    font-weight:600;
+    border-radius:var(--radius);
+    padding:14px 22px;
+    border:1.5px solid transparent;
+    cursor:pointer;
+    transition:transform 0.1s ease, background 0.15s ease, border-color 0.15s ease;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .btn:active{transform:scale(0.98);}
+  .btn-primary{
+    background:var(--ink);
+    color:#fff;
+    flex:1;
+  }
+  .btn-primary:hover{background:#000;}
+  .btn-secondary{
+    background:transparent;
+    color:var(--ink-soft);
+    border-color:var(--line-strong);
+  }
+  .btn-secondary:hover{border-color:var(--ink-soft);color:var(--ink);}
+  .btn-secondary.hidden{visibility:hidden;}
+
+  .btn-whatsapp{
+    background:var(--accent);
+    color:#fff;
+    flex:1;
+    display:flex;align-items:center;justify-content:center;gap:9px;
+  }
+  .btn-whatsapp:hover{background:var(--accent-dark);}
+  .btn-whatsapp svg{width:18px;height:18px;flex-shrink:0;}
+
+  .clearlink{
+    display:block;
+    text-align:center;
+    font-size:12.5px;
+    color:var(--ink-faint);
+    background:none;border:none;
+    text-decoration:underline;
+    text-underline-offset:2px;
+    cursor:pointer;
+    margin:0 auto;
+    padding:6px;
+  }
+  .clearlink:hover{color:var(--ink-soft);}
+
+  /* ---------- Review step ---------- */
+  .reviewnote{
+    background:var(--accent-tint);
+    border:1px solid var(--accent);
+    border-radius:var(--radius);
+    padding:14px 16px;
+    font-size:13.5px;
+    color:var(--accent-dark);
+    margin-bottom:24px;
+    line-height:1.5;
+  }
+  .reviewsection{
+    border:1px solid var(--line);
+    border-radius:var(--radius);
+    background:var(--paper-raised);
+    margin-bottom:12px;
+    overflow:hidden;
+  }
+  .reviewsection-head{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:12px 16px;
+    background:#FAFAF8;
+    border-bottom:1px solid var(--line);
+  }
+  .reviewsection-head h3{
+    font-family:var(--font-mono);
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin:0;
+  }
+  .editlink{
+    font-size:12.5px;
+    font-weight:600;
+    color:var(--accent-dark);
+    background:none;border:none;cursor:pointer;
+    text-decoration:underline;
+    text-underline-offset:2px;
+  }
+  .reviewsection-body{padding:14px 16px;}
+  .reviewrow{
+    display:flex;
+    justify-content:space-between;
+    gap:16px;
+    padding:7px 0;
+    font-size:14px;
+    border-bottom:1px dashed var(--line);
+  }
+  .reviewrow:last-child{border-bottom:none;}
+  .reviewrow dt{color:var(--ink-faint);flex-shrink:0;}
+  .reviewrow dd{margin:0;text-align:right;color:var(--ink);font-weight:500;}
+
+  /* ---------- Footer ---------- */
+  .sitefooter{
+    max-width:var(--maxw);
+    margin:0 auto;
+    padding:32px 20px 24px;
+    border-top:1px solid var(--line);
+    text-align:center;
+  }
+  .sitefooter .fbrand{
+    font-family:var(--font-display);
+    font-size:16px;
+    font-weight:600;
+    color:var(--ink);
+    margin-bottom:8px;
+  }
+  .sitefooter .fcontact{
+    font-size:13px;
+    color:var(--ink-soft);
+    line-height:1.8;
+  }
+  .sitefooter .fcontact a{color:var(--ink-soft);text-decoration:none;}
+  .sitefooter .fcontact a:hover{color:var(--accent-dark);text-decoration:underline;}
+  .sitefooter .fprivacy{
+    font-size:12px;
+    color:var(--ink-faint);
+    margin-top:14px;
+    max-width:44ch;
+    margin-left:auto;margin-right:auto;
+  }
+
+  /* ---------- Intro (step 1 lead-in) ---------- */
+  .hero-copy{
+    margin-bottom:26px;
+  }
+  .hero-copy .microcopy{
+    font-size:13px;
+    color:var(--ink-faint);
+    margin-top:10px;
+  }
+
+  @media (max-width:400px){
+    .btn{padding:14px 16px;font-size:14.5px;}
+  }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <header class="topbar">
+    <div class="topbar-inner">
+      <div class="brandrow">
+        <div class="brandmark">
+          <span class="dot" aria-hidden="true"></span>
+          <span>Jamal Samuel · Marketing Intel Lab</span>
+        </div>
+        <div class="steplabel" id="stepLabel">Step 1 of 6</div>
+      </div>
+      <div class="signal" id="signalMeter" role="progressbar" aria-valuemin="1" aria-valuemax="6" aria-valuenow="1" aria-label="Form progress">
+        <div class="seg current" data-seg="1"></div>
+        <div class="seg" data-seg="2"></div>
+        <div class="seg" data-seg="3"></div>
+        <div class="seg" data-seg="4"></div>
+        <div class="seg" data-seg="5"></div>
+        <div class="seg" data-seg="6"></div>
+      </div>
+    </div>
+  </header>
+
+  <main class="stage">
+    <form id="discoveryForm" novalidate>
+
+      <!-- STEP 1: BUSINESS -->
+      <section class="step active" data-step="1" aria-labelledby="s1title">
+        <div class="hero-copy">
+          <p class="step-eyebrow">Quick Marketing Discovery</p>
+          <h1 class="step-title" id="s1title">Let's see where your marketing could work harder.</h1>
+          <p class="step-sub">Answer a few quick questions about your business and what you want your marketing to accomplish. Most questions take only a click.</p>
+          <p class="microcopy">Not sure about something? That's fine — choose "Not Sure" where available. No complicated marketing questionnaire; we first want to understand what your business actually needs.</p>
+        </div>
+
+        <div class="field" data-field="businessName">
+          <label class="fieldlabel req" for="businessName">Business name</label>
+          <input type="text" id="businessName" name="businessName" autocomplete="organization" required>
+          <div class="fielderr"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.94 6.94a.75.75 0 111.06 1.06L9.06 9l.94.94a.75.75 0 11-1.06 1.06L8 10.06l-.94.94a.75.75 0 01-1.06-1.06l.94-.94-.94-.94a.75.75 0 011.06-1.06L8 8.94l.94-.94z" clip-rule="evenodd"/></svg><span>Enter your business name to continue.</span></div>
+        </div>
+
+        <div class="field" data-field="businessOffer">
+          <label class="fieldlabel req" for="businessOffer">What does your business mainly sell or provide?</label>
+          <input type="text" id="businessOffer" name="businessOffer" placeholder="e.g. Home-cooked catering for events" required>
+          <div class="fielderr"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.94 6.94a.75.75 0 111.06 1.06L9.06 9l.94.94a.75.75 0 11-1.06 1.06L8 10.06l-.94.94a.75.75 0 01-1.06-1.06l.94-.94-.94-.94a.75.75 0 011.06-1.06L8 8.94l.94-.94z" clip-rule="evenodd"/></svg><span>Let us know what you offer.</span></div>
+        </div>
+
+        <div class="field" data-field="businessLocation">
+          <label class="fieldlabel req" for="businessLocation">Where is your business located, or what area do you serve?</label>
+          <input type="text" id="businessLocation" name="businessLocation" placeholder="e.g. Vieux-Fort, Saint Lucia" required>
+          <div class="fielderr"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.94 6.94a.75.75 0 111.06 1.06L9.06 9l.94.94a.75.75 0 11-1.06 1.06L8 10.06l-.94.94a.75.75 0 01-1.06-1.06l.94-.94-.94-.94a.75.75 0 011.06-1.06L8 8.94l.94-.94z" clip-rule="evenodd"/></svg><span>Tell us where you're based or who you serve.</span></div>
+        </div>
+
+        <div class="field" data-field="yourName">
+          <label class="fieldlabel req" for="yourName">Your name</label>
+          <input type="text" id="yourName" name="yourName" autocomplete="name" required>
+          <div class="fielderr"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.94 6.94a.75.75 0 111.06 1.06L9.06 9l.94.94a.75.75 0 11-1.06 1.06L8 10.06l-.94.94a.75.75 0 01-1.06-1.06l.94-.94-.94-.94a.75.75 0 011.06-1.06L8 8.94l.94-.94z" clip-rule="evenodd"/></svg><span>Let us know who's reaching out.</span></div>
+        </div>
+
+        <div class="field" data-field="website">
+          <label class="fieldlabel" for="website">Website or social page <span class="opt-tag">Optional</span></label>
+          <input type="text" id="website" name="website" placeholder="e.g. instagram.com/yourbusiness">
+        </div>
+      </section>
+
+      <!-- STEP 2: GOAL -->
+      <section class="step" data-step="2" aria-labelledby="s2title">
+        <p class="step-eyebrow">Step 2 — Goal</p>
+        <h2 class="step-title" id="s2title">What would you most like your marketing to improve right now?</h2>
+        <p class="step-sub">Pick the one that matters most today.</p>
+
+        <div class="field" data-field="goal">
+          <div class="cardgrid" role="radiogroup" aria-labelledby="s2title" id="goalGrid"></div>
+          <div class="fielderr"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.94 6.94a.75.75 0 111.06 1.06L9.06 9l.94.94a.75.75 0 11-1.06 1.06L8 10.06l-.94.94a.75.75 0 01-1.06-1.06l.94-.94-.94-.94a.75.75 0 011.06-1.06L8 8.94l.94-.94z" clip-rule="evenodd"/></svg><span>Choose one option to continue.</span></div>
+          <div class="conditional" id="goalOtherWrap">
+            <input type="text" id="goalOther" name="goalOther" placeholder="Tell us what you'd like to improve" aria-label="Describe your goal">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="fieldlabel" for="priority">Is there a particular product, service, promotion, or part of the business you'd most like to grow? <span class="opt-tag">Optional</span></label>
+          <input type="text" id="priority" name="priority" placeholder="e.g. Weekend catering orders">
+        </div>
+      </section>
+
+      <!-- STEP 3: MARKETING -->
+      <section class="step" data-step="3" aria-labelledby="s3title">
+        <p class="step-eyebrow">Step 3 — Current Marketing</p>
+        <h2 class="step-title" id="s3title">How are you currently promoting your business?</h2>
+        <p class="step-sub">Select everything that applies.</p>
+
+        <div class="field" data-field="channels">
+          <div class="cardgrid two-col" id="channelsGrid"></div>
+          <div class="fielderr"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.94 6.94a.75.75 0 111.06 1.06L9.06 9l.94.94a.75.75 0 11-1.06 1.06L8 10.06l-.94.94a.75.75 0 01-1.06-1.06l.94-.94-.94-.94a.75.75 0 011.06-1.06L8 8.94l.94-.94z" clip-rule="evenodd"/></svg><span>Select at least one option.</span></div>
+          <div class="conditional" id="channelsOtherWrap">
+            <input type="text" id="channelsOther" name="channelsOther" placeholder="Tell us how else you promote your business" aria-label="Other marketing channel">
+          </div>
+        </div>
+
+        <div class="field" data-field="performance">
+          <label class="fieldlabel req">How well is your current marketing producing actual inquiries, bookings, or sales?</label>
+          <div class="cardgrid" role="radiogroup" id="performanceGrid"></div>
+          <div class="fielderr"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.94 6.94a.75.75 0 111.06 1.06L9.06 9l.94.94a.75.75 0 11-1.06 1.06L8 10.06l-.94.94a.75.75 0 01-1.06-1.06l.94-.94-.94-.94a.75.75 0 011.06-1.06L8 8.94l.94-.94z" clip-rule="evenodd"/></svg><span>Choose one option to continue.</span></div>
+        </div>
+      </section>
+
+      <!-- STEP 4: CUSTOMER ACTION -->
+      <section class="step" data-step="4" aria-labelledby="s4title">
+        <p class="step-eyebrow">Step 4 — Customer Action</p>
+        <h2 class="step-title" id="s4title">When someone becomes interested, what do you MOST want them to do next?</h2>
+        <p class="step-sub">Pick the single next step that matters most.</p>
+
+        <div class="field" data-field="customerAction">
+          <div class="cardgrid two-col" role="radiogroup" id="customerActionGrid"></div>
+          <div class="fielderr"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.94 6.94a.75.75 0 111.06 1.06L9.06 9l.94.94a.75.75 0 11-1.06 1.06L8 10.06l-.94.94a.75.75 0 01-1.06-1.06l.94-.94-.94-.94a.75.75 0 011.06-1.06L8 8.94l.94-.94z" clip-rule="evenodd"/></svg><span>Choose one option to continue.</span></div>
+          <div class="conditional" id="customerActionOtherWrap">
+            <input type="text" id="customerActionOther" name="customerActionOther" placeholder="Tell us what you'd like them to do" aria-label="Other customer action">
+          </div>
+        </div>
+      </section>
+
+      <!-- STEP 5: CHALLENGE -->
+      <section class="step" data-step="5" aria-labelledby="s5title">
+        <p class="step-eyebrow">Step 5 — Challenge</p>
+        <h2 class="step-title" id="s5title">Which sounds MOST like your current situation?</h2>
+        <p class="step-sub">Choose the one that fits best.</p>
+
+        <div class="field" data-field="challenge">
+          <div class="cardgrid" role="radiogroup" id="challengeGrid"></div>
+          <div class="fielderr"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.94 6.94a.75.75 0 111.06 1.06L9.06 9l.94.94a.75.75 0 11-1.06 1.06L8 10.06l-.94.94a.75.75 0 01-1.06-1.06l.94-.94-.94-.94a.75.75 0 011.06-1.06L8 8.94l.94-.94z" clip-rule="evenodd"/></svg><span>Choose one option to continue.</span></div>
+          <div class="conditional" id="challengeOtherWrap">
+            <input type="text" id="challengeOther" name="challengeOther" placeholder="Describe your situation" aria-label="Other challenge">
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="fieldlabel" for="mainProblem">What is the ONE marketing problem you'd most like help solving? <span class="opt-tag">Optional</span></label>
+          <textarea id="mainProblem" name="mainProblem" maxlength="280" placeholder="Keep it brief — a sentence or two is plenty"></textarea>
+        </div>
+      </section>
+
+      <!-- STEP 6: REVIEW & SEND -->
+      <section class="step" data-step="6" aria-labelledby="s6title">
+        <p class="step-eyebrow">Step 6 — Review &amp; Send</p>
+        <h2 class="step-title" id="s6title">Review your discovery</h2>
+        <p class="step-sub">Check everything looks right, then send it straight to WhatsApp.</p>
+
+        <div class="reviewnote">Sending your discovery does not commit you to purchasing a service. Your information will first be reviewed to determine whether and how we may be able to help.</div>
+
+        <div id="reviewContainer"></div>
+      </section>
+
+    </form>
+  </main>
+
+  <div class="controlbar">
+    <div class="controlbar-inner">
+      <button type="button" class="btn btn-secondary" id="backBtn">Back</button>
+      <button type="button" class="btn btn-primary" id="nextBtn">Continue</button>
+      <button type="button" class="btn btn-whatsapp" id="sendBtn" style="display:none;">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.72.45 3.4 1.3 4.88L2 22l5.32-1.4a9.9 9.9 0 004.72 1.2h.01c5.46 0 9.9-4.45 9.9-9.91C21.96 6.45 17.5 2 12.04 2zm5.83 14.05c-.24.68-1.4 1.32-1.93 1.4-.5.08-1.13.11-1.82-.11-.42-.13-.96-.31-1.65-.6-2.9-1.25-4.8-4.17-4.94-4.36-.14-.19-1.18-1.57-1.18-3 0-1.42.75-2.12 1.02-2.41.26-.28.57-.35.76-.35h.55c.18 0 .42-.07.65.5.24.57.82 1.98.9 2.12.07.15.12.32.02.5-.1.19-.15.31-.29.48-.15.17-.31.38-.44.51-.15.15-.3.31-.13.6.17.29.76 1.26 1.64 2.04 1.13.99 2.08 1.3 2.37 1.45.29.14.46.12.63-.07.17-.19.72-.84.92-1.13.19-.29.38-.24.64-.14.26.1 1.66.78 1.94.92.29.14.48.21.55.33.07.12.07.68-.17 1.32z"/></svg>
+        Send my marketing discovery
+      </button>
+    </div>
+    <button type="button" class="clearlink" id="clearBtn">Start over / clear form</button>
+  </div>
+
+  <footer class="sitefooter">
+    <div class="fbrand">Jamal Samuel Marketing Intel Lab</div>
+    <div class="fcontact">
+      WhatsApp: <a href="https://wa.me/17587235872" target="_blank" rel="noopener">+1 758 723 5872</a><br>
+      Email: <a href="mailto:jamal.s.samuel@outlook.com">jamal.s.samuel@outlook.com</a><br>
+      Instagram: <a href="https://instagram.com/jamalsamuel.online" target="_blank" rel="noopener">@jamalsamuel.online</a>
+    </div>
+    <p class="fprivacy">Your information is used only to review your marketing needs and communicate with you about your inquiry.</p>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var STORAGE_KEY = "jsmil_discovery_v1";
+  var TOTAL_STEPS = 6;
+  var currentStep = 1;
+
+  // ---------- Option definitions ----------
+  var GOAL_OPTIONS = [
+    {v:"leads", l:"More inquiries/leads"},
+    {v:"whatsapp", l:"More WhatsApp messages"},
+    {v:"bookings", l:"More bookings/appointments"},
+    {v:"sales", l:"More orders/sales"},
+    {v:"foot_traffic", l:"More customers visiting my location"},
+    {v:"events", l:"More event attendance"},
+    {v:"repeat", l:"More repeat customers"},
+    {v:"awareness", l:"More people knowing about my business"},
+    {v:"unsure", l:"I'm not sure — I need guidance"},
+    {v:"other", l:"Other"}
+  ];
+
+  var CHANNEL_OPTIONS = [
+    {v:"facebook", l:"Facebook"},
+    {v:"instagram", l:"Instagram"},
+    {v:"tiktok", l:"TikTok"},
+    {v:"whatsapp", l:"WhatsApp"},
+    {v:"website", l:"Website"},
+    {v:"google", l:"Google"},
+    {v:"paid_ads", l:"Paid online ads"},
+    {v:"print", l:"Flyers/print advertising"},
+    {v:"referrals", l:"Referrals/word of mouth"},
+    {v:"other", l:"Other"},
+    {v:"none", l:"I'm not actively marketing"}
+  ];
+
+  var PERFORMANCE_OPTIONS = [
+    {v:"very_well", l:"Very well"},
+    {v:"fairly_well", l:"Fairly well"},
+    {v:"poorly", l:"Poorly"},
+    {v:"not_at_all", l:"Not at all"},
+    {v:"dont_know", l:"I honestly don't know"}
+  ];
+
+  var CUSTOMER_ACTION_OPTIONS = [
+    {v:"whatsapp", l:"Message us on WhatsApp"},
+    {v:"call", l:"Call us"},
+    {v:"social_dm", l:"Send us a social-media message"},
+    {v:"website", l:"Visit our website"},
+    {v:"appointment", l:"Book an appointment"},
+    {v:"order_online", l:"Order online"},
+    {v:"visit_location", l:"Visit our location"},
+    {v:"form", l:"Complete a form"},
+    {v:"unsure", l:"Not sure"},
+    {v:"other", l:"Other"}
+  ];
+
+  var CHALLENGE_OPTIONS = [
+    {v:"awareness", l:"Not enough people know about us"},
+    {v:"no_response", l:"People see our marketing but don't respond"},
+    {v:"no_conversion", l:"People inquire but don't buy/book"},
+    {v:"price_hesitation", l:"Customers often hesitate because of price"},
+    {v:"unclear_offer", l:"People don't clearly understand what we offer"},
+    {v:"consistency", l:"We struggle to market consistently"},
+    {v:"followup", l:"Our follow-up/customer journey could be better"},
+    {v:"time", l:"Marketing takes too much of my time"},
+    {v:"dont_know", l:"I don't know what's wrong"},
+    {v:"other", l:"Other"}
+  ];
+
+  var CHECK_ICON = '<svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l3.5 3.5L16 5.5" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+  // ---------- Data model ----------
+  var defaultData = {
+    businessName:"", businessOffer:"", businessLocation:"", yourName:"", website:"",
+    goal:"", goalOther:"", priority:"",
+    channels:[], channelsOther:"", performance:"",
+    customerAction:"", customerActionOther:"",
+    challenge:"", challengeOther:"", mainProblem:""
+  };
+  var data = loadData();
+
+  function loadData(){
+    try{
+      var raw = localStorage.getItem(STORAGE_KEY);
+      if(!raw) return JSON.parse(JSON.stringify(defaultData));
+      var parsed = JSON.parse(raw);
+      var merged = JSON.parse(JSON.stringify(defaultData));
+      for(var k in merged){ if(parsed.hasOwnProperty(k)) merged[k] = parsed[k]; }
+      return merged;
+    }catch(e){
+      return JSON.parse(JSON.stringify(defaultData));
+    }
+  }
+
+  function saveData(){
+    try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(data)); }catch(e){}
+  }
+
+  // ---------- Build choice groups ----------
+  function buildSingleSelect(containerId, name, options, onChange){
+    var el = document.getElementById(containerId);
+    var html = "";
+    options.forEach(function(opt, i){
+      var id = name + "_" + opt.v;
+      html += '<div class="choice">' +
+        '<input type="radio" id="'+id+'" name="'+name+'" value="'+opt.v+'">' +
+        '<label for="'+id+'"><span class="indicator">'+CHECK_ICON+'</span><span>'+opt.l+'</span></label>' +
+        '</div>';
+    });
+    el.innerHTML = html;
+    options.forEach(function(opt){
+      var input = document.getElementById(name + "_" + opt.v);
+      input.addEventListener("change", function(){
+        data[name] = opt.v;
+        clearFieldError(name);
+        saveData();
+        if(onChange) onChange(opt.v);
+      });
+    });
+  }
+
+  function buildMultiSelect(containerId, name, options, onChange){
+    var el = document.getElementById(containerId);
+    var html = "";
+    options.forEach(function(opt){
+      var id = name + "_" + opt.v;
+      html += '<div class="choice">' +
+        '<input type="checkbox" id="'+id+'" name="'+name+'" value="'+opt.v+'">' +
+        '<label for="'+id+'"><span class="indicator">'+CHECK_ICON+'</span><span>'+opt.l+'</span></label>' +
+        '</div>';
+    });
+    el.innerHTML = html;
+    options.forEach(function(opt){
+      var input = document.getElementById(name + "_" + opt.v);
+      input.addEventListener("change", function(){
+        onMultiToggle(name, opt.v, input.checked, options);
+        clearFieldError(name);
+        saveData();
+        if(onChange) onChange();
+      });
+    });
+  }
+
+  function onMultiToggle(name, value, checked, options){
+    var arr = data[name].slice();
+    if(name === "channels"){
+      if(value === "none" && checked){
+        arr = ["none"];
+        options.forEach(function(opt){
+          if(opt.v !== "none"){
+            var inp = document.getElementById("channels_" + opt.v);
+            if(inp) inp.checked = false;
+          }
+        });
+      } else if(checked){
+        arr = arr.filter(function(v){ return v !== "none"; });
+        var noneInp = document.getElementById("channels_none");
+        if(noneInp) noneInp.checked = false;
+        if(arr.indexOf(value) === -1) arr.push(value);
+      } else {
+        arr = arr.filter(function(v){ return v !== value; });
+      }
+    } else {
+      if(checked){ if(arr.indexOf(value) === -1) arr.push(value); }
+      else { arr = arr.filter(function(v){ return v !== value; }); }
+    }
+    data[name] = arr;
+  }
+
+  function setSingleSelectUI(name, value){
+    if(!value) return;
+    var input = document.getElementById(name + "_" + value);
+    if(input) input.checked = true;
+  }
+
+  function setMultiSelectUI(name, values){
+    (values || []).forEach(function(v){
+      var input = document.getElementById(name + "_" + v);
+      if(input) input.checked = true;
+    });
+  }
+
+  // ---------- Build option groups ----------
+  buildSingleSelect("goalGrid", "goal", GOAL_OPTIONS, function(v){
+    toggleConditional("goalOtherWrap", v === "other");
+  });
+  buildMultiSelect("channelsGrid", "channels", CHANNEL_OPTIONS, function(){
+    toggleConditional("channelsOtherWrap", data.channels.indexOf("other") !== -1);
+  });
+  buildSingleSelect("performanceGrid", "performance", PERFORMANCE_OPTIONS);
+  buildSingleSelect("customerActionGrid", "customerAction", CUSTOMER_ACTION_OPTIONS, function(v){
+    toggleConditional("customerActionOtherWrap", v === "other");
+  });
+  buildSingleSelect("challengeGrid", "challenge", CHALLENGE_OPTIONS, function(v){
+    toggleConditional("challengeOtherWrap", v === "other");
+  });
+
+  function toggleConditional(wrapId, show){
+    var wrap = document.getElementById(wrapId);
+    if(!wrap) return;
+    wrap.classList.toggle("show", show);
+  }
+
+  // ---------- Text field bindings ----------
+  var TEXT_FIELDS = ["businessName","businessOffer","businessLocation","yourName","website",
+    "goalOther","priority","channelsOther","customerActionOther","challengeOther","mainProblem"];
+  TEXT_FIELDS.forEach(function(id){
+    var el = document.getElementById(id);
+    if(!el) return;
+    el.addEventListener("input", function(){
+      data[id] = el.value;
+      clearFieldError(id);
+      saveData();
+    });
+  });
+
+  // ---------- Hydrate UI from stored data ----------
+  function hydrateUI(){
+    TEXT_FIELDS.forEach(function(id){
+      var el = document.getElementById(id);
+      if(el && data[id]) el.value = data[id];
+    });
+    setSingleSelectUI("goal", data.goal);
+    setMultiSelectUI("channels", data.channels);
+    setSingleSelectUI("performance", data.performance);
+    setSingleSelectUI("customerAction", data.customerAction);
+    setSingleSelectUI("challenge", data.challenge);
+    toggleConditional("goalOtherWrap", data.goal === "other");
+    toggleConditional("channelsOtherWrap", data.channels.indexOf("other") !== -1);
+    toggleConditional("customerActionOtherWrap", data.customerAction === "other");
+    toggleConditional("challengeOtherWrap", data.challenge === "other");
+  }
+  hydrateUI();
+
+  // ---------- Validation ----------
+  function fieldWrap(name){
+    return document.querySelector('[data-field="'+name+'"]');
+  }
+  function showFieldError(name){
+    var wrap = fieldWrap(name);
+    if(wrap) wrap.classList.add("error");
+  }
+  function clearFieldError(name){
+    var wrap = fieldWrap(name);
+    if(wrap) wrap.classList.remove("error");
+  }
+  function clearStepErrors(step){
+    document.querySelectorAll('.step[data-step="'+step+'"] .field.error').forEach(function(f){
+      f.classList.remove("error");
+    });
+  }
+
+  function validateStep(step){
+    clearStepErrors(step);
+    var valid = true;
+    var firstInvalid = null;
+
+    function fail(name){
+      showFieldError(name);
+      valid = false;
+      if(!firstInvalid) firstInvalid = fieldWrap(name);
+    }
+
+    if(step === 1){
+      if(!data.businessName.trim()) fail("businessName");
+      if(!data.businessOffer.trim()) fail("businessOffer");
+      if(!data.businessLocation.trim()) fail("businessLocation");
+      if(!data.yourName.trim()) fail("yourName");
+    }
+    if(step === 2){
+      if(!data.goal) fail("goal");
+      else if(data.goal === "other" && !data.goalOther.trim()) fail("goal");
+    }
+    if(step === 3){
+      if(data.channels.length === 0) fail("channels");
+      else if(data.channels.indexOf("other") !== -1 && !data.channelsOther.trim()) fail("channels");
+      if(!data.performance) fail("performance");
+    }
+    if(step === 4){
+      if(!data.customerAction) fail("customerAction");
+      else if(data.customerAction === "other" && !data.customerActionOther.trim()) fail("customerAction");
+    }
+    if(step === 5){
+      if(!data.challenge) fail("challenge");
+      else if(data.challenge === "other" && !data.challengeOther.trim()) fail("challenge");
+    }
+
+    if(firstInvalid){
+      firstInvalid.scrollIntoView({behavior:"smooth", block:"center"});
+    }
+    return valid;
+  }
+
+  // ---------- Navigation ----------
+  var backBtn = document.getElementById("backBtn");
+  var nextBtn = document.getElementById("nextBtn");
+  var sendBtn = document.getElementById("sendBtn");
+  var stepLabel = document.getElementById("stepLabel");
+  var signalMeter = document.getElementById("signalMeter");
+
+  function goToStep(n, opts){
+    opts = opts || {};
+    if(n < 1) n = 1;
+    if(n > TOTAL_STEPS) n = TOTAL_STEPS;
+    document.querySelectorAll(".step").forEach(function(s){
+      s.classList.toggle("active", parseInt(s.getAttribute("data-step"),10) === n);
+    });
+    currentStep = n;
+    stepLabel.textContent = "Step " + n + " of " + TOTAL_STEPS;
+    signalMeter.setAttribute("aria-valuenow", n);
+    document.querySelectorAll(".signal .seg").forEach(function(seg){
+      var idx = parseInt(seg.getAttribute("data-seg"),10);
+      seg.classList.toggle("filled", idx < n);
+      seg.classList.toggle("current", idx === n);
+    });
+    backBtn.classList.toggle("hidden", n === 1);
+    if(n === TOTAL_STEPS){
+      nextBtn.style.display = "none";
+      sendBtn.style.display = "flex";
+      renderReview();
+    } else {
+      nextBtn.style.display = "block";
+      sendBtn.style.display = "none";
+      nextBtn.textContent = "Continue";
+    }
+    if(!opts.silent){
+      window.scrollTo({top:0, behavior:"smooth"});
+    }
+    saveStep(n);
+  }
+
+  function saveStep(n){
+    try{ localStorage.setItem(STORAGE_KEY + "_step", String(n)); }catch(e){}
+  }
+  function loadStep(){
+    try{
+      var s = parseInt(localStorage.getItem(STORAGE_KEY + "_step"), 10);
+      if(s && s >= 1 && s <= TOTAL_STEPS) return s;
+    }catch(e){}
+    return 1;
+  }
+
+  nextBtn.addEventListener("click", function(){
+    if(!validateStep(currentStep)) return;
+    goToStep(currentStep + 1);
+  });
+  backBtn.addEventListener("click", function(){
+    goToStep(currentStep - 1);
+  });
+  document.getElementById("clearBtn").addEventListener("click", function(){
+    if(!window.confirm("Clear all answers and start over?")) return;
+    try{
+      localStorage.removeItem(STORAGE_KEY);
+      localStorage.removeItem(STORAGE_KEY + "_step");
+    }catch(e){}
+    data = JSON.parse(JSON.stringify(defaultData));
+    document.getElementById("discoveryForm").reset();
+    document.querySelectorAll('input[type="checkbox"], input[type="radio"]').forEach(function(i){ i.checked = false; });
+    toggleConditional("goalOtherWrap", false);
+    toggleConditional("channelsOtherWrap", false);
+    toggleConditional("customerActionOtherWrap", false);
+    toggleConditional("challengeOtherWrap", false);
+    goToStep(1);
+  });
+
+  // ---------- Review rendering ----------
+  function labelFor(options, value){
+    var found = options.filter(function(o){ return o.v === value; });
+    return found.length ? found[0].l : value;
+  }
+
+  function editBtn(step){
+    return '<button type="button" class="editlink" data-goto="'+step+'">Edit</button>';
+  }
+
+  function renderReview(){
+    var container = document.getElementById("reviewContainer");
+    var channelLabels = data.channels.map(function(v){
+      return v === "other" && data.channelsOther ? data.channelsOther : labelFor(CHANNEL_OPTIONS, v);
+    }).join(", ") || "—";
+
+    var goalLabel = data.goal === "other" && data.goalOther ? data.goalOther : labelFor(GOAL_OPTIONS, data.goal);
+    var performanceLabel = labelFor(PERFORMANCE_OPTIONS, data.performance);
+    var customerActionLabel = data.customerAction === "other" && data.customerActionOther ? data.customerActionOther : labelFor(CUSTOMER_ACTION_OPTIONS, data.customerAction);
+    var challengeLabel = data.challenge === "other" && data.challengeOther ? data.challengeOther : labelFor(CHALLENGE_OPTIONS, data.challenge);
+
+    var html = "";
+
+    html += '<div class="reviewsection"><div class="reviewsection-head"><h3>Business</h3>'+editBtn(1)+'</div><div class="reviewsection-body"><dl>' +
+      row("Business name", data.businessName) +
+      row("What you provide", data.businessOffer) +
+      row("Location / area", data.businessLocation) +
+      row("Your name", data.yourName) +
+      (data.website ? row("Website/Social", data.website) : "") +
+      '</dl></div></div>';
+
+    html += '<div class="reviewsection"><div class="reviewsection-head"><h3>Goal</h3>'+editBtn(2)+'</div><div class="reviewsection-body"><dl>' +
+      row("Main goal", goalLabel) +
+      (data.priority ? row("Priority", data.priority) : "") +
+      '</dl></div></div>';
+
+    html += '<div class="reviewsection"><div class="reviewsection-head"><h3>Current Marketing</h3>'+editBtn(3)+'</div><div class="reviewsection-body"><dl>' +
+      row("Channels", channelLabels) +
+      row("Current results", performanceLabel) +
+      '</dl></div></div>';
+
+    html += '<div class="reviewsection"><div class="reviewsection-head"><h3>Customer Action</h3>'+editBtn(4)+'</div><div class="reviewsection-body"><dl>' +
+      row("Wanted next step", customerActionLabel) +
+      '</dl></div></div>';
+
+    html += '<div class="reviewsection"><div class="reviewsection-head"><h3>Challenge</h3>'+editBtn(5)+'</div><div class="reviewsection-body"><dl>' +
+      row("Current situation", challengeLabel) +
+      (data.mainProblem ? row("Main problem", data.mainProblem) : "") +
+      '</dl></div></div>';
+
+    container.innerHTML = html;
+
+    container.querySelectorAll("[data-goto]").forEach(function(btn){
+      btn.addEventListener("click", function(){
+        goToStep(parseInt(btn.getAttribute("data-goto"),10));
+      });
+    });
+  }
+
+  function row(label, value){
+    return '<div class="reviewrow"><dt>'+escapeHtml(label)+'</dt><dd>'+escapeHtml(String(value))+'</dd></div>';
+  }
+
+  function escapeHtml(str){
+    var d = document.createElement("div");
+    d.textContent = str;
+    return d.innerHTML;
+  }
+
+  // ---------- WhatsApp message ----------
+  function buildMessage(){
+    var goalLabel = data.goal === "other" && data.goalOther ? data.goalOther : labelFor(GOAL_OPTIONS, data.goal);
+    var channelLabels = data.channels.map(function(v){
+      return v === "other" && data.channelsOther ? data.channelsOther : labelFor(CHANNEL_OPTIONS, v);
+    }).join(", ");
+    var performanceLabel = labelFor(PERFORMANCE_OPTIONS, data.performance);
+    var customerActionLabel = data.customerAction === "other" && data.customerActionOther ? data.customerActionOther : labelFor(CUSTOMER_ACTION_OPTIONS, data.customerAction);
+    var challengeLabel = data.challenge === "other" && data.challengeOther ? data.challengeOther : labelFor(CHALLENGE_OPTIONS, data.challenge);
+
+    var lines = [];
+    lines.push("Hi, I'd like you to review my business marketing.");
+    lines.push("");
+    lines.push("QUICK MARKETING DISCOVERY");
+    lines.push("");
+    lines.push("Business: " + data.businessName);
+    lines.push("Location: " + data.businessLocation);
+    lines.push("We provide: " + data.businessOffer);
+    lines.push("");
+    lines.push("Main goal: " + goalLabel);
+    lines.push("");
+    lines.push("Current marketing: " + (channelLabels || "Not specified"));
+    lines.push("");
+    lines.push("Current results: " + performanceLabel);
+    lines.push("");
+    lines.push("Desired customer action: " + customerActionLabel);
+    lines.push("");
+    lines.push("Current situation: " + challengeLabel);
+    lines.push("");
+    lines.push("Priority: " + (data.priority.trim() ? data.priority.trim() : "Not specified"));
+    lines.push("");
+    lines.push("Main problem: " + (data.mainProblem.trim() ? data.mainProblem.trim() : "Not specified"));
+    lines.push("");
+    lines.push("Name: " + data.yourName);
+    if(data.website.trim()) lines.push("Website/Social: " + data.website.trim());
+    lines.push("");
+    lines.push("I'd like to know what you recommend as the next step.");
+
+    return lines.join("\n");
+  }
+
+  sendBtn.addEventListener("click", function(){
+    for(var s = 1; s <= 5; s++){
+      if(!validateStep(s)){
+        goToStep(s);
+        return;
+      }
+    }
+    var message = buildMessage();
+    var url = "https://wa.me/17587235872?text=" + encodeURIComponent(message);
+    window.open(url, "_blank", "noopener");
+  });
+
+  // ---------- Init ----------
+  goToStep(loadStep(), {silent:true});
+})();
+</script>
+</body>
+</html>
