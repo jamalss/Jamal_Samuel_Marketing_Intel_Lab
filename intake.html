@@ -1298,6 +1298,49 @@
     };
   }
 
+  // ---------- Export field labeling ----------
+  // The Sheet (and Formspree's notification email) are read by a person
+  // scanning cells, not code — so every coded field (select/checkbox
+  // values like "1_2" or "not_sure") gets swapped for its human-readable
+  // label before export. Free-text fields, dates, email/phone, and the
+  // submission ID are left exactly as entered. Column keys and order in
+  // sheets-logger.gs are unchanged — this only changes what's INSIDE
+  // each cell, so it carries no realignment risk.
+  function labelOverridesForExport(d){
+    var L = computedLabels(d);
+    var map = {
+      businessType: L.businessTypeLabel,
+      howLongOperating: L.howLongLabel,
+      offerEstablished: L.offerEstablishedLabel,
+      offerPromo: L.offerPromoLabel,
+      primaryGoal: L.primaryGoalLabel,
+      measure: L.measureLabel,
+      knowBaseline: L.knowBaselineLabel,
+      whyBuy: L.whyBuyLabel,
+      blockers: L.blockersLabel,
+      proof: L.proofLabel,
+      channelsActive: L.channelsActiveLabel,
+      paidAdsBefore: L.paidAdsBeforeLabel,
+      paidAdsWhere: L.paidAdsWhereLabel,
+      paidAdsResults: L.paidAdsResultsLabel,
+      purchase: L.purchaseLabel,
+      responseTime: L.responseTimeLabel,
+      difficultyEncountered: L.difficultyLabel,
+      capacity: L.capacityLabel,
+      delivery: L.deliveryLabel,
+      appointments: L.appointmentsLabel,
+      leadTime: L.leadTimeLabel,
+      limitations: L.limitationsLabel,
+      assets: L.assetsLabel,
+      brandFeel: L.brandFeelLabel,
+      budgetPlan: L.budgetPlanLabel,
+      budgetRange: L.budgetRangeLabel
+    };
+    var out = {};
+    for(var k in map){ out[k] = (map[k] === "—") ? "" : map[k]; }
+    return out;
+  }
+
   // ---------- Review rendering ----------
   function renderReview(){
     var d = sanitizeData(data);
@@ -1554,6 +1597,9 @@
     var refId = getOrCreateSubmissionId();
     var sanitized = sanitizeData(data);
     var fullText = buildFullText(refId);
+    var labelOverrides = labelOverridesForExport(sanitized);
+    var exportData = {};
+    for(var ek in sanitized){ exportData[ek] = labelOverrides.hasOwnProperty(ek) ? labelOverrides[ek] : sanitized[ek]; }
 
     var payload = {
       submission_id: refId,
@@ -1564,7 +1610,7 @@
       submitted_at: new Date().toISOString(),
       full_intake: fullText
     };
-    for(var key in sanitized){ if(payload[key] === undefined) payload[key] = sanitized[key]; }
+    for(var key in exportData){ if(payload[key] === undefined) payload[key] = exportData[key]; }
 
     if(!endpointConfigured()){
       trySheetsSubmit(payload);
