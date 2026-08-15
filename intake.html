@@ -58,6 +58,9 @@
     position:absolute;width:1px;height:1px;padding:0;margin:-1px;
     overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;
   }
+  .hp-field{
+    position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;overflow:hidden;
+  }
 
   /* ---------- Shell ---------- */
   .app{min-height:100vh;display:flex;flex-direction:column;}
@@ -231,6 +234,11 @@
   }
   .thankyou .ticon svg{width:26px;height:26px;color:var(--accent-dark);}
   .thankyou h2{font-family:var(--font-display);font-size:clamp(24px,5vw,30px);margin:0 0 12px;}
+  .thankyou .reference-id{
+    font-family:var(--font-mono);font-size:12.5px;font-weight:600;letter-spacing:0.03em;
+    color:var(--accent-dark);background:var(--accent-tint);border:1px solid var(--accent);
+    border-radius:999px;display:inline-block;padding:6px 14px;margin:0 0 16px;
+  }
   .thankyou p{font-size:14.5px;color:var(--ink-soft);max-width:48ch;margin:0 auto 8px;line-height:1.6;}
   .thankyou .tcontact{margin-top:26px;font-size:13.5px;color:var(--ink-soft);line-height:1.9;}
   .thankyou .tcontact strong{display:block;font-family:var(--font-display);font-size:16px;color:var(--ink);margin-bottom:6px;}
@@ -268,6 +276,10 @@
 
   <main class="stage">
     <form id="intakeForm" novalidate>
+      <div class="hp-field" aria-hidden="true">
+        <label for="hp_field">Leave this field blank</label>
+        <input type="text" id="hp_field" name="hp_field" tabindex="-1" autocomplete="off">
+      </div>
 
       <!-- STEP 1: BUSINESS DETAILS -->
       <section class="step active" data-step="1">
@@ -276,6 +288,7 @@
           <h1 class="step-title">Let's build this properly.</h1>
           <p class="step-sub">You've completed the first discovery step. Now we need a little more detail about your business, customers, offer and operations so we can develop recommendations based on facts — not assumptions. Most questions are quick selections.</p>
           <p class="microcopy">If you don't know an answer, choose "Not Sure" rather than guessing.</p>
+          <p class="microcopy">Your progress is saved on this device while you complete the form. Submitted information is processed through our form and record-keeping services so we can review your business, prepare recommendations and communicate with you.</p>
         </div>
 
         <div class="field" data-field="businessName">
@@ -324,7 +337,7 @@
         </div>
 
         <div class="row2">
-          <div class="field"><label class="fieldlabel" for="website">Website <span class="opt-tag">Optional</span></label><input type="text" id="website" data-bind="website"></div>
+          <div class="field"><label class="fieldlabel" for="website">Website <span class="opt-tag">Optional</span></label><input type="text" id="website" data-bind="website" inputmode="url" autocomplete="url"></div>
           <div class="field"><label class="fieldlabel" for="facebook">Facebook <span class="opt-tag">Optional</span></label><input type="text" id="facebook" data-bind="facebook"></div>
         </div>
         <div class="row2">
@@ -357,8 +370,12 @@
             <div></div>
           </div>
           <div class="row2">
-            <div class="field"><label class="fieldlabel" for="offerStartDate">Start date</label><input type="date" id="offerStartDate" data-bind="offerStartDate"></div>
-            <div class="field"><label class="fieldlabel" for="offerEndDate">End date</label><input type="date" id="offerEndDate" data-bind="offerEndDate"></div>
+            <div class="field" data-field="offerStartDate"><label class="fieldlabel" for="offerStartDate">Start date</label><input type="date" id="offerStartDate" data-bind="offerStartDate"></div>
+            <div class="field" data-field="offerEndDate">
+              <label class="fieldlabel" for="offerEndDate">End date</label>
+              <input type="date" id="offerEndDate" data-bind="offerEndDate">
+              <div class="fielderr"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.94 6.94a.75.75 0 111.06 1.06L9.06 9l.94.94a.75.75 0 11-1.06 1.06L8 10.06l-.94.94a.75.75 0 01-1.06-1.06l.94-.94-.94-.94a.75.75 0 011.06-1.06L8 8.94l.94-.94z" clip-rule="evenodd"/></svg><span>End date can't be earlier than the start date.</span></div>
+            </div>
           </div>
           <div class="field"><label class="fieldlabel" for="offerTerms">Important terms or restrictions <span class="opt-tag">Optional</span></label><textarea id="offerTerms" data-bind="offerTerms" class="small"></textarea></div>
         </div>
@@ -369,8 +386,8 @@
         <p class="step-eyebrow">Step 3 — Business Objective</p>
         <h2 class="step-title">What we're aiming for.</h2>
 
-        <div class="field">
-          <label class="fieldlabel" for="primaryGoal">Primary goal</label>
+        <div class="field" data-field="primaryGoal">
+          <label class="fieldlabel req" for="primaryGoal">Primary goal</label>
           <select id="primaryGoal" data-bind="primaryGoal">
             <option value="">Choose one…</option>
             <option value="leads">More inquiries/leads</option>
@@ -387,8 +404,10 @@
           <div class="conditional" id="primaryGoalOtherWrap">
             <input type="text" id="primaryGoalOther" data-bind="primaryGoalOther" placeholder="Describe your goal">
           </div>
+          <div class="fielderr"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.94 6.94a.75.75 0 111.06 1.06L9.06 9l.94.94a.75.75 0 11-1.06 1.06L8 10.06l-.94.94a.75.75 0 01-1.06-1.06l.94-.94-.94-.94a.75.75 0 011.06-1.06L8 8.94l.94-.94z" clip-rule="evenodd"/></svg><span>Choose a goal, or "I'm not sure — I need guidance" if you're not certain.</span></div>
           <p class="hint">Carried over from your discovery answers — edit if anything's changed.</p>
         </div>
+
 
         <div class="field"><label class="fieldlabel">How would you personally know this marketing was working? <span class="opt-tag">Optional</span></label><div class="cardgrid two-col" id="measureGrid"></div></div>
 
@@ -403,15 +422,24 @@
         <p class="step-eyebrow">Step 4 — Your Customers</p>
         <h2 class="step-title">Who we're speaking to.</h2>
 
-        <div class="field"><label class="fieldlabel" for="buyerWho">Who normally buys this product/service? <span class="opt-tag">Optional</span></label><input type="text" id="buyerWho" data-bind="buyerWho"></div>
+        <div class="field" data-field="buyerWho">
+          <label class="fieldlabel req" for="buyerWho">Who normally buys this product/service?</label>
+          <input type="text" id="buyerWho" data-bind="buyerWho" placeholder="Type &quot;Not sure&quot; if you're not certain">
+          <div class="fielderr"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.94 6.94a.75.75 0 111.06 1.06L9.06 9l.94.94a.75.75 0 11-1.06 1.06L8 10.06l-.94.94a.75.75 0 01-1.06-1.06l.94-.94-.94-.94a.75.75 0 011.06-1.06L8 8.94l.94-.94z" clip-rule="evenodd"/></svg><span>Enter an answer — "Not sure" is fine.</span></div>
+        </div>
         <div class="field"><label class="fieldlabel" for="buyerWant">Who would you especially like to attract more of? <span class="opt-tag">Optional — or "Not Sure"</span></label><input type="text" id="buyerWant" data-bind="buyerWant"></div>
 
         <div class="field"><label class="fieldlabel">Why do customers usually buy from you? <span class="opt-tag">Optional</span></label><div class="cardgrid two-col" id="whyBuyGrid"></div></div>
 
         <div class="field"><label class="fieldlabel" for="commonQuestions">What questions do customers commonly ask before buying? <span class="opt-tag">Optional</span></label><textarea id="commonQuestions" data-bind="commonQuestions"></textarea></div>
 
-        <div class="field"><label class="fieldlabel">What most often stops interested people from buying? <span class="opt-tag">Optional</span></label><div class="cardgrid two-col" id="blockersGrid"></div></div>
+        <div class="field" data-field="blockers">
+          <label class="fieldlabel req">What most often stops interested people from buying?</label>
+          <div class="cardgrid two-col" id="blockersGrid"></div>
+          <div class="fielderr"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.94 6.94a.75.75 0 111.06 1.06L9.06 9l.94.94a.75.75 0 11-1.06 1.06L8 10.06l-.94.94a.75.75 0 01-1.06-1.06l.94-.94-.94-.94a.75.75 0 011.06-1.06L8 8.94l.94-.94z" clip-rule="evenodd"/></svg><span>Choose at least one — "Not sure" is fine.</span></div>
+        </div>
       </section>
+
 
       <!-- STEP 5: WHY CHOOSE YOUR BUSINESS -->
       <section class="step" data-step="5">
@@ -442,7 +470,11 @@
         <p class="step-eyebrow">Step 7 — Marketing &amp; Customer Journey</p>
         <h2 class="step-title">How people find and reach you now.</h2>
 
-        <div class="field"><label class="fieldlabel">Which channels are currently active? <span class="opt-tag">Optional</span></label><div class="cardgrid two-col" id="channelsActiveGrid"></div></div>
+        <div class="field" data-field="channelsActive">
+          <label class="fieldlabel req">Which channels are currently active?</label>
+          <div class="cardgrid two-col" id="channelsActiveGrid"></div>
+          <div class="fielderr"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.94 6.94a.75.75 0 111.06 1.06L9.06 9l.94.94a.75.75 0 11-1.06 1.06L8 10.06l-.94.94a.75.75 0 01-1.06-1.06l.94-.94-.94-.94a.75.75 0 011.06-1.06L8 8.94l.94-.94z" clip-rule="evenodd"/></svg><span>Choose at least one, or "None currently".</span></div>
+        </div>
 
         <div class="field"><label class="fieldlabel">Have you paid for online advertising before? <span class="opt-tag">Optional</span></label><div class="cardgrid" id="paidAdsBeforeGrid"></div></div>
         <div class="conditional" id="paidAdsDetailsWrap">
@@ -450,7 +482,11 @@
           <div class="field"><label class="fieldlabel">How would you describe the results?</label><div class="cardgrid" id="paidAdsResultsGrid"></div></div>
         </div>
 
-        <div class="field"><label class="fieldlabel">When a customer becomes interested, how do they normally complete the purchase or booking? <span class="opt-tag">Optional</span></label><div class="cardgrid two-col" id="purchaseGrid"></div></div>
+        <div class="field" data-field="purchase">
+          <label class="fieldlabel req">When a customer becomes interested, how do they normally complete the purchase or booking?</label>
+          <div class="cardgrid two-col" id="purchaseGrid"></div>
+          <div class="fielderr"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.94 6.94a.75.75 0 111.06 1.06L9.06 9l.94.94a.75.75 0 11-1.06 1.06L8 10.06l-.94.94a.75.75 0 01-1.06-1.06l.94-.94-.94-.94a.75.75 0 011.06-1.06L8 8.94l.94-.94z" clip-rule="evenodd"/></svg><span>Choose at least one, or "Not applicable".</span></div>
+        </div>
 
         <div class="field"><label class="fieldlabel">How quickly are inquiries usually answered? <span class="opt-tag">Optional</span></label><div class="cardgrid two-col" id="responseTimeGrid"></div></div>
 
@@ -465,7 +501,11 @@
         <p class="step-eyebrow">Step 8 — Operations &amp; Capacity</p>
         <h2 class="step-title">What marketing needs to work around.</h2>
 
-        <div class="field"><label class="fieldlabel">Can the business currently handle more customers? <span class="opt-tag">Optional</span></label><div class="cardgrid" id="capacityGrid"></div></div>
+        <div class="field" data-field="capacity">
+          <label class="fieldlabel req">Can the business currently handle more customers?</label>
+          <div class="cardgrid" id="capacityGrid"></div>
+          <div class="fielderr"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.94 6.94a.75.75 0 111.06 1.06L9.06 9l.94.94a.75.75 0 11-1.06 1.06L8 10.06l-.94.94a.75.75 0 01-1.06-1.06l.94-.94-.94-.94a.75.75 0 011.06-1.06L8 8.94l.94-.94z" clip-rule="evenodd"/></svg><span>Choose one, or "Not sure".</span></div>
+        </div>
         <div class="field"><label class="fieldlabel">Do you offer delivery? <span class="opt-tag">Optional</span></label><div class="cardgrid" id="deliveryGrid"></div></div>
         <div class="field"><label class="fieldlabel">Are appointments/bookings required? <span class="opt-tag">Optional</span></label><div class="cardgrid" id="appointmentsGrid"></div></div>
         <div class="field"><label class="fieldlabel">Typical lead time <span class="opt-tag">Optional</span></label><div class="cardgrid two-col" id="leadTimeGrid"></div></div>
@@ -498,17 +538,17 @@
         <div class="row2">
           <div class="field" data-field="verifiedWhatsapp">
             <label class="fieldlabel req" for="verifiedWhatsapp">WhatsApp number</label>
-            <input type="text" id="verifiedWhatsapp" data-bind="verifiedWhatsapp" required>
+            <input type="tel" id="verifiedWhatsapp" data-bind="verifiedWhatsapp" autocomplete="tel" inputmode="tel" required>
             <div class="fielderr"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.94 6.94a.75.75 0 111.06 1.06L9.06 9l.94.94a.75.75 0 11-1.06 1.06L8 10.06l-.94.94a.75.75 0 01-1.06-1.06l.94-.94-.94-.94a.75.75 0 011.06-1.06L8 8.94l.94-.94z" clip-rule="evenodd"/></svg><span>Required so customers can reach you.</span></div>
           </div>
-          <div class="field"><label class="fieldlabel" for="verifiedPhone">Phone number <span class="opt-tag">Optional</span></label><input type="text" id="verifiedPhone" data-bind="verifiedPhone"></div>
+          <div class="field"><label class="fieldlabel" for="verifiedPhone">Phone number <span class="opt-tag">Optional</span></label><input type="tel" id="verifiedPhone" data-bind="verifiedPhone" autocomplete="tel" inputmode="tel"></div>
         </div>
         <div class="field" data-field="verifiedEmail">
           <label class="fieldlabel req" for="verifiedEmail">Email address</label>
-          <input type="text" id="verifiedEmail" data-bind="verifiedEmail" required>
+          <input type="email" id="verifiedEmail" data-bind="verifiedEmail" autocomplete="email" inputmode="email" required>
           <div class="fielderr"><svg viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.94 6.94a.75.75 0 111.06 1.06L9.06 9l.94.94a.75.75 0 11-1.06 1.06L8 10.06l-.94.94a.75.75 0 01-1.06-1.06l.94-.94-.94-.94a.75.75 0 011.06-1.06L8 8.94l.94-.94z" clip-rule="evenodd"/></svg><span>Enter a valid email address.</span></div>
         </div>
-        <div class="field"><label class="fieldlabel" for="verifiedWebsite">Website <span class="opt-tag">Optional</span></label><input type="text" id="verifiedWebsite" data-bind="verifiedWebsite"></div>
+        <div class="field"><label class="fieldlabel" for="verifiedWebsite">Website <span class="opt-tag">Optional</span></label><input type="text" id="verifiedWebsite" data-bind="verifiedWebsite" inputmode="url" autocomplete="url"></div>
         <div class="field"><label class="fieldlabel" for="verifiedAddress">Physical address / service area <span class="opt-tag">Optional</span></label><input type="text" id="verifiedAddress" data-bind="verifiedAddress"></div>
         <div class="field"><label class="fieldlabel" for="verifiedHours">Opening hours <span class="opt-tag">Optional</span></label><input type="text" id="verifiedHours" data-bind="verifiedHours"></div>
         <div class="field"><label class="fieldlabel" for="verifiedPrices">Relevant current prices <span class="opt-tag">Optional</span></label><textarea id="verifiedPrices" data-bind="verifiedPrices" class="small"></textarea></div>
@@ -583,6 +623,7 @@
         <div class="thankyou">
           <div class="ticon"><svg viewBox="0 0 20 20" fill="none"><path d="M4 10.5l4 4L16 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
           <h2>Thank you — your marketing intake has been received.</h2>
+          <p id="thankyouReference" class="reference-id"></p>
           <p>We now have the information needed to begin a proper commercial review of your business and marketing opportunity. If clarification is required, we'll contact you before developing recommendations.</p>
           <p id="thankyouEmailNote" style="display:none;">Your email app should have opened with everything pre-filled — please hit send to complete delivery.</p>
           <div class="tcontact">
@@ -727,7 +768,7 @@
   var CHANNELS_OPTIONS = [
     {v:"facebook", l:"Facebook"}, {v:"instagram", l:"Instagram"}, {v:"tiktok", l:"TikTok"}, {v:"whatsapp", l:"WhatsApp"},
     {v:"website", l:"Website"}, {v:"google", l:"Google"}, {v:"email", l:"Email"}, {v:"paid_ads", l:"Paid online ads"},
-    {v:"print", l:"Flyers/print"}, {v:"referrals", l:"Referrals"}, {v:"other", l:"Other"}
+    {v:"print", l:"Flyers/print"}, {v:"referrals", l:"Referrals"}, {v:"other", l:"Other"}, {v:"none", l:"None currently"}
   ];
   var YESNO_OPTIONS = [{v:"yes", l:"Yes"}, {v:"no", l:"No"}];
   var YESNO_NOTSURE_OPTIONS = [{v:"yes", l:"Yes"}, {v:"no", l:"No"}, {v:"not_sure", l:"Not sure"}];
@@ -736,7 +777,7 @@
   var PURCHASE_OPTIONS = [
     {v:"whatsapp", l:"WhatsApp"}, {v:"phone", l:"Phone"}, {v:"website_checkout", l:"Website checkout"},
     {v:"booking_system", l:"Booking system"}, {v:"payment_link", l:"Payment link"}, {v:"bank_transfer", l:"Bank transfer"},
-    {v:"invoice", l:"Invoice"}, {v:"cash_in_person", l:"Cash/in person"}, {v:"other", l:"Other"}
+    {v:"invoice", l:"Invoice"}, {v:"cash_in_person", l:"Cash/in person"}, {v:"other", l:"Other"}, {v:"na", l:"Not applicable"}
   ];
   var RESPONSE_TIME_OPTIONS = [
     {v:"immediately", l:"Immediately"}, {v:"within_15", l:"Within 15 minutes"}, {v:"within_1hr", l:"Within 1 hour"},
@@ -744,7 +785,8 @@
   ];
   var CAPACITY_OPTIONS = [
     {v:"significant", l:"Yes — significant capacity"}, {v:"some", l:"Yes — some additional capacity"},
-    {v:"limited", l:"Limited capacity"}, {v:"not_currently", l:"Not currently"}, {v:"depends", l:"Depends on the product/service"}
+    {v:"limited", l:"Limited capacity"}, {v:"not_currently", l:"Not currently"}, {v:"depends", l:"Depends on the product/service"},
+    {v:"not_sure", l:"Not sure"}
   ];
   var YESNO_NA_OPTIONS = [{v:"yes", l:"Yes"}, {v:"no", l:"No"}, {v:"na", l:"Not applicable"}];
   var APPT_OPTIONS = [{v:"yes", l:"Yes"}, {v:"no", l:"No"}, {v:"sometimes", l:"Sometimes"}, {v:"na", l:"Not applicable"}];
@@ -801,6 +843,80 @@
     confirmAccurate:false, confirmPermission:false, confirmNoGuarantee:false
   };
   var data = loadData();
+
+  // ---------- Sanitize: strip stale conditional data before export ----------
+  // Ensures the payload sent to Formspree/Sheets and the readable full_intake
+  // text only ever reflect fields that are currently active/relevant given
+  // the parent answer — not leftover values from a since-changed selection.
+  function sanitizeData(raw){
+    var d = JSON.parse(JSON.stringify(raw));
+
+    if(d.businessType !== "other") d.businessTypeOther = "";
+    if(d.offerPromo !== "yes"){
+      d.offerDescribe = ""; d.offerPromoPrice = ""; d.offerStartDate = ""; d.offerEndDate = ""; d.offerTerms = "";
+    }
+    if(d.primaryGoal !== "other") d.primaryGoalOther = "";
+    if((d.measure || []).indexOf("other") === -1) d.measureOther = "";
+    if(d.knowBaseline !== "yes" && d.knowBaseline !== "somewhat") d.baselineDetails = "";
+    if((d.whyBuy || []).indexOf("other") === -1) d.whyBuyOther = "";
+    if((d.blockers || []).indexOf("other") === -1) d.blockersOther = "";
+    if((d.proof || []).indexOf("other") === -1) d.proofOther = "";
+    var proofHasReal = (d.proof || []).some(function(v){ return v !== "none"; });
+    if(!proofHasReal) d.proofDescribe = "";
+    if((d.channelsActive || []).indexOf("other") === -1) d.channelsActiveOther = "";
+    if(d.paidAdsBefore !== "yes"){
+      d.paidAdsWhere = []; d.paidAdsWhereOther = ""; d.paidAdsResults = "";
+    } else if((d.paidAdsWhere || []).indexOf("other") === -1){
+      d.paidAdsWhereOther = "";
+    }
+    if((d.purchase || []).indexOf("other") === -1) d.purchaseOther = "";
+    if(d.difficultyEncountered !== "yes") d.difficultyWhere = "";
+    if((d.limitations || []).indexOf("other") === -1) d.limitationsOther = "";
+    if((d.assets || []).indexOf("other") === -1) d.assetsOther = "";
+    if((d.brandFeel || []).indexOf("other") === -1) d.brandFeelOther = "";
+    if(d.budgetPlan !== "yes" && d.budgetPlan !== "not_decided") d.budgetRange = "";
+
+    return d;
+  }
+
+  // ---------- Submission ID ----------
+  // Generated the first time it's needed (copying the intake or submitting
+  // it) and persisted so retries — and an accidental refresh mid-retry —
+  // reuse the same reference instead of minting a new one.
+  var SUBID_KEY = STORAGE_KEY + "_subid";
+  var currentSubmissionId = null;
+  function loadStoredSubmissionId(){
+    try{ return localStorage.getItem(SUBID_KEY) || null; }catch(e){ return null; }
+  }
+  function generateSubmissionId(){
+    var now = new Date();
+    var datePart = now.getFullYear() +
+      String(now.getMonth()+1).padStart(2,"0") +
+      String(now.getDate()).padStart(2,"0");
+    var chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    var suffix = "";
+    if(window.crypto && window.crypto.getRandomValues){
+      var buf = new Uint32Array(5);
+      window.crypto.getRandomValues(buf);
+      for(var i=0;i<5;i++){ suffix += chars[buf[i] % chars.length]; }
+    } else {
+      for(var j=0;j<5;j++){ suffix += chars[Math.floor(Math.random()*chars.length)]; }
+    }
+    return "JSMIL-" + datePart + "-" + suffix;
+  }
+  function getOrCreateSubmissionId(){
+    if(currentSubmissionId) return currentSubmissionId;
+    var stored = loadStoredSubmissionId();
+    if(stored){ currentSubmissionId = stored; return stored; }
+    var fresh = generateSubmissionId();
+    currentSubmissionId = fresh;
+    try{ localStorage.setItem(SUBID_KEY, fresh); }catch(e){}
+    return fresh;
+  }
+  function clearSubmissionId(){
+    currentSubmissionId = null;
+    try{ localStorage.removeItem(SUBID_KEY); }catch(e){}
+  }
 
   function loadData(){
     try{
@@ -905,18 +1021,19 @@
       document.getElementById(name + "_" + opt.v).addEventListener("change", function(input){
         var el2 = document.getElementById(name + "_" + opt.v);
         var arr = data[name].slice();
-        if(name === "channelsActive"){
-          if(el2.checked){ if(arr.indexOf(opt.v) === -1) arr.push(opt.v); }
-          else{ arr = arr.filter(function(v){ return v !== opt.v; }); }
-        } else if(opts.exclusiveNone && opt.v === "none"){
+        var exclusiveVal = opts.exclusiveValue || (opts.exclusiveNone ? "none" : null);
+        if(exclusiveVal && opt.v === exclusiveVal){
           if(el2.checked){
-            arr = ["none"];
-            options.forEach(function(o){ if(o.v !== "none"){ var i = document.getElementById(name + "_" + o.v); if(i) i.checked = false; } });
-          } else { arr = arr.filter(function(v){ return v !== "none"; }); }
+            arr = [exclusiveVal];
+            options.forEach(function(o){ if(o.v !== exclusiveVal){ var i = document.getElementById(name + "_" + o.v); if(i) i.checked = false; } });
+          } else { arr = arr.filter(function(v){ return v !== exclusiveVal; }); }
         } else {
           if(el2.checked){
-            arr = arr.filter(function(v){ return v !== "none"; });
-            if(opts.exclusiveNone){ var noneInp = document.getElementById(name + "_none"); if(noneInp) noneInp.checked = false; }
+            if(exclusiveVal){
+              arr = arr.filter(function(v){ return v !== exclusiveVal; });
+              var exInp = document.getElementById(name + "_" + exclusiveVal);
+              if(exInp) exInp.checked = false;
+            }
             if(arr.indexOf(opt.v) === -1) arr.push(opt.v);
           } else { arr = arr.filter(function(v){ return v !== opt.v; }); }
         }
@@ -947,11 +1064,11 @@
   buildMultiSelect("whyBuyGrid", "whyBuy", WHY_BUY_OPTIONS);
   buildMultiSelect("blockersGrid", "blockers", BLOCKERS_OPTIONS);
   buildMultiSelect("proofGrid", "proof", PROOF_OPTIONS, {exclusiveNone:true});
-  buildMultiSelect("channelsActiveGrid", "channelsActive", CHANNELS_OPTIONS);
+  buildMultiSelect("channelsActiveGrid", "channelsActive", CHANNELS_OPTIONS, {exclusiveValue:"none"});
   buildSingleSelect("paidAdsBeforeGrid", "paidAdsBefore", YESNO_OPTIONS, function(v){ toggleConditional("paidAdsDetailsWrap", v === "yes"); });
   buildMultiSelect("paidAdsWhereGrid", "paidAdsWhere", PAID_ADS_WHERE_OPTIONS);
   buildSingleSelect("paidAdsResultsGrid", "paidAdsResults", PAID_ADS_RESULTS_OPTIONS);
-  buildMultiSelect("purchaseGrid", "purchase", PURCHASE_OPTIONS);
+  buildMultiSelect("purchaseGrid", "purchase", PURCHASE_OPTIONS, {exclusiveValue:"na"});
   buildSingleSelect("responseTimeGrid", "responseTime", RESPONSE_TIME_OPTIONS);
   buildSingleSelect("difficultyGrid", "difficultyEncountered", YESNO_NOTSURE_OPTIONS, function(v){ toggleConditional("difficultyWhereWrap", v === "yes"); });
   buildSingleSelect("capacityGrid", "capacity", CAPACITY_OPTIONS);
@@ -982,6 +1099,19 @@
   wireSelectOther("businessType", "businessTypeOtherWrap", "businessType");
   wireSelectOther("primaryGoal", "primaryGoalOtherWrap", "primaryGoal");
 
+  // ---------- Live promotion date-range check ----------
+  function checkOfferDateRange(){
+    if(data.offerPromo === "yes" && data.offerStartDate && data.offerEndDate && data.offerEndDate < data.offerStartDate){
+      showFieldError("offerEndDate");
+    } else {
+      clearFieldError("offerEndDate");
+    }
+  }
+  ["offerStartDate","offerEndDate"].forEach(function(id){
+    var el = document.getElementById(id);
+    if(el) el.addEventListener("change", checkOfferDateRange);
+  });
+
   // ---------- Confirmation checkboxes ----------
   document.querySelectorAll("[data-bind-check]").forEach(function(el){
     var name = el.getAttribute("data-bind-check");
@@ -1001,6 +1131,8 @@
     document.querySelectorAll('.step[data-step="'+step+'"] .field.error').forEach(function(f){ f.classList.remove("error"); });
   }
 
+  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
   function validateStep(step){
     clearStepErrors(step);
     var valid = true, firstInvalid = null;
@@ -1013,11 +1145,29 @@
     }
     if(step === 2){
       if(!data.priorityOffer.trim()) fail("priorityOffer");
+      if(data.offerPromo === "yes" && data.offerStartDate && data.offerEndDate && data.offerEndDate < data.offerStartDate){
+        fail("offerEndDate");
+      }
+    }
+    if(step === 3){
+      if(!data.primaryGoal) fail("primaryGoal");
+      else if(data.primaryGoal === "other" && !data.primaryGoalOther.trim()) fail("primaryGoal");
+    }
+    if(step === 4){
+      if(!data.buyerWho.trim()) fail("buyerWho");
+      if(data.blockers.length === 0) fail("blockers");
+    }
+    if(step === 7){
+      if(data.channelsActive.length === 0) fail("channelsActive");
+      if(data.purchase.length === 0) fail("purchase");
+    }
+    if(step === 8){
+      if(!data.capacity) fail("capacity");
     }
     if(step === 9){
       if(!data.verifiedBusinessName.trim()) fail("verifiedBusinessName");
       if(!data.verifiedWhatsapp.trim()) fail("verifiedWhatsapp");
-      if(!data.verifiedEmail.trim() || data.verifiedEmail.indexOf("@") === -1) fail("verifiedEmail");
+      if(!data.verifiedEmail.trim() || !EMAIL_RE.test(data.verifiedEmail.trim())) fail("verifiedEmail");
     }
     if(step === 11){
       if(!data.confirmAccurate || !data.confirmPermission || !data.confirmNoGuarantee) fail("confirmAccurate");
@@ -1117,100 +1267,101 @@
   }
   function escapeHtml(str){ var d = document.createElement("div"); d.textContent = str; return d.innerHTML; }
 
-  function computedLabels(){
+  function computedLabels(d){
     return {
-      businessTypeLabel: singleLabel([{v:"retail",l:"Retail"},{v:"restaurant",l:"Restaurant/Food"},{v:"prof_services",l:"Professional Services"},{v:"beauty_wellness",l:"Beauty/Wellness"},{v:"trades",l:"Trades/Home Services"},{v:"tourism",l:"Tourism/Hospitality"},{v:"health",l:"Health"},{v:"education",l:"Education"},{v:"events",l:"Events"},{v:"ecommerce",l:"E-commerce"},{v:"nonprofit",l:"Nonprofit"},{v:"other",l:"Other"}], data.businessType, data.businessTypeOther),
-      howLongLabel: singleLabel(HOW_LONG_OPTIONS, data.howLongOperating),
-      offerEstablishedLabel: singleLabel(OFFER_ESTABLISHED_OPTIONS, data.offerEstablished),
-      offerPromoLabel: singleLabel(OFFER_PROMO_OPTIONS, data.offerPromo),
-      primaryGoalLabel: singleLabel([{v:"leads",l:"More inquiries/leads"},{v:"whatsapp",l:"More WhatsApp messages"},{v:"bookings",l:"More bookings/appointments"},{v:"sales",l:"More orders/sales"},{v:"foot_traffic",l:"More customers visiting my location"},{v:"events",l:"More event attendance"},{v:"repeat",l:"More repeat customers"},{v:"awareness",l:"More people knowing about my business"},{v:"unsure",l:"I'm not sure — I need guidance"},{v:"other",l:"Other"}], data.primaryGoal, data.primaryGoalOther),
-      measureLabel: multiLabels(MEASURE_OPTIONS, data.measure, data.measureOther),
-      knowBaselineLabel: singleLabel(BASELINE_OPTIONS, data.knowBaseline),
-      whyBuyLabel: multiLabels(WHY_BUY_OPTIONS, data.whyBuy, data.whyBuyOther),
-      blockersLabel: multiLabels(BLOCKERS_OPTIONS, data.blockers, data.blockersOther),
-      proofLabel: multiLabels(PROOF_OPTIONS, data.proof, data.proofOther),
-      channelsActiveLabel: multiLabels(CHANNELS_OPTIONS, data.channelsActive, data.channelsActiveOther),
-      paidAdsBeforeLabel: singleLabel(YESNO_OPTIONS, data.paidAdsBefore),
-      paidAdsWhereLabel: multiLabels(PAID_ADS_WHERE_OPTIONS, data.paidAdsWhere, data.paidAdsWhereOther),
-      paidAdsResultsLabel: singleLabel(PAID_ADS_RESULTS_OPTIONS, data.paidAdsResults),
-      purchaseLabel: multiLabels(PURCHASE_OPTIONS, data.purchase, data.purchaseOther),
-      responseTimeLabel: singleLabel(RESPONSE_TIME_OPTIONS, data.responseTime),
-      difficultyLabel: singleLabel(YESNO_NOTSURE_OPTIONS, data.difficultyEncountered),
-      capacityLabel: singleLabel(CAPACITY_OPTIONS, data.capacity),
-      deliveryLabel: singleLabel(YESNO_NA_OPTIONS, data.delivery),
-      appointmentsLabel: singleLabel(APPT_OPTIONS, data.appointments),
-      leadTimeLabel: singleLabel(LEADTIME_OPTIONS, data.leadTime),
-      limitationsLabel: multiLabels(LIMITATIONS_OPTIONS, data.limitations, data.limitationsOther),
-      assetsLabel: multiLabels(ASSETS_OPTIONS, data.assets, data.assetsOther),
-      brandFeelLabel: multiLabels(BRAND_FEEL_OPTIONS, data.brandFeel, data.brandFeelOther),
-      budgetPlanLabel: singleLabel(BUDGET_PLAN_OPTIONS, data.budgetPlan),
-      budgetRangeLabel: singleLabel(BUDGET_RANGE_OPTIONS, data.budgetRange)
+      businessTypeLabel: singleLabel([{v:"retail",l:"Retail"},{v:"restaurant",l:"Restaurant/Food"},{v:"prof_services",l:"Professional Services"},{v:"beauty_wellness",l:"Beauty/Wellness"},{v:"trades",l:"Trades/Home Services"},{v:"tourism",l:"Tourism/Hospitality"},{v:"health",l:"Health"},{v:"education",l:"Education"},{v:"events",l:"Events"},{v:"ecommerce",l:"E-commerce"},{v:"nonprofit",l:"Nonprofit"},{v:"other",l:"Other"}], d.businessType, d.businessTypeOther),
+      howLongLabel: singleLabel(HOW_LONG_OPTIONS, d.howLongOperating),
+      offerEstablishedLabel: singleLabel(OFFER_ESTABLISHED_OPTIONS, d.offerEstablished),
+      offerPromoLabel: singleLabel(OFFER_PROMO_OPTIONS, d.offerPromo),
+      primaryGoalLabel: singleLabel([{v:"leads",l:"More inquiries/leads"},{v:"whatsapp",l:"More WhatsApp messages"},{v:"bookings",l:"More bookings/appointments"},{v:"sales",l:"More orders/sales"},{v:"foot_traffic",l:"More customers visiting my location"},{v:"events",l:"More event attendance"},{v:"repeat",l:"More repeat customers"},{v:"awareness",l:"More people knowing about my business"},{v:"unsure",l:"I'm not sure — I need guidance"},{v:"other",l:"Other"}], d.primaryGoal, d.primaryGoalOther),
+      measureLabel: multiLabels(MEASURE_OPTIONS, d.measure, d.measureOther),
+      knowBaselineLabel: singleLabel(BASELINE_OPTIONS, d.knowBaseline),
+      whyBuyLabel: multiLabels(WHY_BUY_OPTIONS, d.whyBuy, d.whyBuyOther),
+      blockersLabel: multiLabels(BLOCKERS_OPTIONS, d.blockers, d.blockersOther),
+      proofLabel: multiLabels(PROOF_OPTIONS, d.proof, d.proofOther),
+      channelsActiveLabel: multiLabels(CHANNELS_OPTIONS, d.channelsActive, d.channelsActiveOther),
+      paidAdsBeforeLabel: singleLabel(YESNO_OPTIONS, d.paidAdsBefore),
+      paidAdsWhereLabel: multiLabels(PAID_ADS_WHERE_OPTIONS, d.paidAdsWhere, d.paidAdsWhereOther),
+      paidAdsResultsLabel: singleLabel(PAID_ADS_RESULTS_OPTIONS, d.paidAdsResults),
+      purchaseLabel: multiLabels(PURCHASE_OPTIONS, d.purchase, d.purchaseOther),
+      responseTimeLabel: singleLabel(RESPONSE_TIME_OPTIONS, d.responseTime),
+      difficultyLabel: singleLabel(YESNO_NOTSURE_OPTIONS, d.difficultyEncountered),
+      capacityLabel: singleLabel(CAPACITY_OPTIONS, d.capacity),
+      deliveryLabel: singleLabel(YESNO_NA_OPTIONS, d.delivery),
+      appointmentsLabel: singleLabel(APPT_OPTIONS, d.appointments),
+      leadTimeLabel: singleLabel(LEADTIME_OPTIONS, d.leadTime),
+      limitationsLabel: multiLabels(LIMITATIONS_OPTIONS, d.limitations, d.limitationsOther),
+      assetsLabel: multiLabels(ASSETS_OPTIONS, d.assets, d.assetsOther),
+      brandFeelLabel: multiLabels(BRAND_FEEL_OPTIONS, d.brandFeel, d.brandFeelOther),
+      budgetPlanLabel: singleLabel(BUDGET_PLAN_OPTIONS, d.budgetPlan),
+      budgetRangeLabel: singleLabel(BUDGET_RANGE_OPTIONS, d.budgetRange)
     };
   }
 
   // ---------- Review rendering ----------
   function renderReview(){
-    var L = computedLabels();
+    var d = sanitizeData(data);
+    var L = computedLabels(d);
     var container = document.getElementById("reviewContainer");
     var html = "";
 
     html += '<div class="reviewsection"><div class="reviewsection-head"><h3>Business Details</h3>'+editBtn(1)+'</div><div class="reviewsection-body"><dl>'
-      + row("Business name", data.businessName) + row("Your name", data.yourName)
+      + row("Business name", d.businessName) + row("Your name", d.yourName)
       + row("Business type", L.businessTypeLabel !== "—" ? L.businessTypeLabel : "")
-      + row("Location", data.location) + row("Operating for", L.howLongLabel !== "—" ? L.howLongLabel : "")
-      + row("Website", data.website) + row("Facebook", data.facebook) + row("Instagram", data.instagram) + row("Other page", data.otherPage)
+      + row("Location", d.location) + row("Operating for", L.howLongLabel !== "—" ? L.howLongLabel : "")
+      + row("Website", d.website) + row("Facebook", d.facebook) + row("Instagram", d.instagram) + row("Other page", d.otherPage)
       + '</dl></div></div>';
 
     html += '<div class="reviewsection"><div class="reviewsection-head"><h3>What Are We Marketing</h3>'+editBtn(2)+'</div><div class="reviewsection-body"><dl>'
-      + row("Priority offer", data.priorityOffer) + row("Typical price", data.typicalPrice)
+      + row("Priority offer", d.priorityOffer) + row("Typical price", d.typicalPrice)
       + row("How established", L.offerEstablishedLabel !== "—" ? L.offerEstablishedLabel : "")
       + row("Considering a promo", L.offerPromoLabel !== "—" ? L.offerPromoLabel : "")
-      + (data.offerPromo === "yes" ? row("Offer", data.offerDescribe) + row("Promo price", data.offerPromoPrice) + row("Start", data.offerStartDate) + row("End", data.offerEndDate) + row("Terms", data.offerTerms) : "")
+      + (d.offerPromo === "yes" ? row("Offer", d.offerDescribe) + row("Promo price", d.offerPromoPrice) + row("Start", d.offerStartDate) + row("End", d.offerEndDate) + row("Terms", d.offerTerms) : "")
       + '</dl></div></div>';
 
     html += '<div class="reviewsection"><div class="reviewsection-head"><h3>Business Objective</h3>'+editBtn(3)+'</div><div class="reviewsection-body"><dl>'
       + row("Primary goal", L.primaryGoalLabel) + row("Success looks like", L.measureLabel !== "—" ? L.measureLabel : "")
-      + row("Know baseline", L.knowBaselineLabel !== "—" ? L.knowBaselineLabel : "") + row("Baseline details", data.baselineDetails)
+      + row("Know baseline", L.knowBaselineLabel !== "—" ? L.knowBaselineLabel : "") + row("Baseline details", d.baselineDetails)
       + '</dl></div></div>';
 
     html += '<div class="reviewsection"><div class="reviewsection-head"><h3>Your Customers</h3>'+editBtn(4)+'</div><div class="reviewsection-body"><dl>'
-      + row("Who buys", data.buyerWho) + row("Who to attract more", data.buyerWant)
-      + row("Why they buy", L.whyBuyLabel !== "—" ? L.whyBuyLabel : "") + row("Common questions", data.commonQuestions)
+      + row("Who buys", d.buyerWho) + row("Who to attract more", d.buyerWant)
+      + row("Why they buy", L.whyBuyLabel !== "—" ? L.whyBuyLabel : "") + row("Common questions", d.commonQuestions)
       + row("What stops them", L.blockersLabel !== "—" ? L.blockersLabel : "")
       + '</dl></div></div>';
 
     html += '<div class="reviewsection"><div class="reviewsection-head"><h3>Why Choose You</h3>'+editBtn(5)+'</div><div class="reviewsection-body"><dl>'
-      + row("Why they choose you", data.whyChooseYou) + row("Most complimented", data.complimentsMost)
-      + row("Competitors", data.competitors) + row("What's different", data.genuinelyDifferent)
+      + row("Why they choose you", d.whyChooseYou) + row("Most complimented", d.complimentsMost)
+      + row("Competitors", d.competitors) + row("What's different", d.genuinelyDifferent)
       + '</dl></div></div>';
 
     html += '<div class="reviewsection"><div class="reviewsection-head"><h3>Proof & Credibility</h3>'+editBtn(6)+'</div><div class="reviewsection-body"><dl>'
-      + row("Usable proof", L.proofLabel !== "—" ? L.proofLabel : "") + row("Strongest proof", data.proofDescribe)
+      + row("Usable proof", L.proofLabel !== "—" ? L.proofLabel : "") + row("Strongest proof", d.proofDescribe)
       + '</dl></div></div>';
 
     html += '<div class="reviewsection"><div class="reviewsection-head"><h3>Marketing & Journey</h3>'+editBtn(7)+'</div><div class="reviewsection-body"><dl>'
       + row("Active channels", L.channelsActiveLabel !== "—" ? L.channelsActiveLabel : "")
       + row("Paid ads before", L.paidAdsBeforeLabel !== "—" ? L.paidAdsBeforeLabel : "")
-      + (data.paidAdsBefore === "yes" ? row("Where", L.paidAdsWhereLabel !== "—" ? L.paidAdsWhereLabel : "") + row("Results", L.paidAdsResultsLabel !== "—" ? L.paidAdsResultsLabel : "") : "")
+      + (d.paidAdsBefore === "yes" ? row("Where", L.paidAdsWhereLabel !== "—" ? L.paidAdsWhereLabel : "") + row("Results", L.paidAdsResultsLabel !== "—" ? L.paidAdsResultsLabel : "") : "")
       + row("How they complete purchase", L.purchaseLabel !== "—" ? L.purchaseLabel : "")
       + row("Response time", L.responseTimeLabel !== "—" ? L.responseTimeLabel : "")
-      + row("Journey difficulty", L.difficultyLabel !== "—" ? L.difficultyLabel : "") + row("Where", data.difficultyWhere)
+      + row("Journey difficulty", L.difficultyLabel !== "—" ? L.difficultyLabel : "") + row("Where", d.difficultyWhere)
       + '</dl></div></div>';
 
     html += '<div class="reviewsection"><div class="reviewsection-head"><h3>Operations & Capacity</h3>'+editBtn(8)+'</div><div class="reviewsection-body"><dl>'
       + row("Capacity", L.capacityLabel !== "—" ? L.capacityLabel : "") + row("Delivery", L.deliveryLabel !== "—" ? L.deliveryLabel : "")
       + row("Appointments required", L.appointmentsLabel !== "—" ? L.appointmentsLabel : "") + row("Lead time", L.leadTimeLabel !== "—" ? L.leadTimeLabel : "")
-      + row("Limitations", L.limitationsLabel !== "—" ? L.limitationsLabel : "") + row("Don't promote heavily", data.dontPromote)
+      + row("Limitations", L.limitationsLabel !== "—" ? L.limitationsLabel : "") + row("Don't promote heavily", d.dontPromote)
       + '</dl></div></div>';
 
     html += '<div class="reviewsection"><div class="reviewsection-head"><h3>Brand, Assets & Verified Details</h3>'+editBtn(9)+'</div><div class="reviewsection-body"><dl>'
       + row("Assets available", L.assetsLabel !== "—" ? L.assetsLabel : "") + row("Brand should feel", L.brandFeelLabel !== "—" ? L.brandFeelLabel : "")
-      + row("Not to use", data.notUsed)
-      + row("Verified business name", data.verifiedBusinessName) + row("WhatsApp", data.verifiedWhatsapp) + row("Phone", data.verifiedPhone)
-      + row("Email", data.verifiedEmail) + row("Website", data.verifiedWebsite) + row("Address/area", data.verifiedAddress)
-      + row("Hours", data.verifiedHours) + row("Prices", data.verifiedPrices) + row("Offer terms", data.verifiedOfferTerms)
-      + row("Important dates", data.verifiedDates) + row("Restrictions", data.verifiedRestrictions)
-      + row("Credentials", data.verifiedCredentials) + row("Guarantees", data.verifiedGuarantees) + row("Disclaimers", data.verifiedDisclaimers)
+      + row("Not to use", d.notUsed)
+      + row("Verified business name", d.verifiedBusinessName) + row("WhatsApp", d.verifiedWhatsapp) + row("Phone", d.verifiedPhone)
+      + row("Email", d.verifiedEmail) + row("Website", d.verifiedWebsite) + row("Address/area", d.verifiedAddress)
+      + row("Hours", d.verifiedHours) + row("Prices", d.verifiedPrices) + row("Offer terms", d.verifiedOfferTerms)
+      + row("Important dates", d.verifiedDates) + row("Restrictions", d.verifiedRestrictions)
+      + row("Credentials", d.verifiedCredentials) + row("Guarantees", d.verifiedGuarantees) + row("Disclaimers", d.verifiedDisclaimers)
       + '</dl></div></div>';
 
     html += '<div class="reviewsection"><div class="reviewsection-head"><h3>Budget</h3>'+editBtn(10)+'</div><div class="reviewsection-body"><dl>'
@@ -1218,7 +1369,7 @@
       + '</dl></div></div>';
 
     html += '<div class="reviewsection"><div class="reviewsection-head"><h3>Final Notes</h3>'+editBtn(11)+'</div><div class="reviewsection-body"><dl>'
-      + row("Anything else", data.finalNotes)
+      + row("Anything else", d.finalNotes)
       + '</dl></div></div>';
 
     container.innerHTML = html;
@@ -1228,70 +1379,72 @@
   }
 
   // ---------- Full plain-text intake (used for email + clipboard) ----------
-  function buildFullText(){
-    var L = computedLabels();
+  function buildFullText(submissionId){
+    var d = sanitizeData(data);
+    var L = computedLabels(d);
     var lines = [];
     lines.push("NEW CLIENT MARKETING INTAKE");
     lines.push("Jamal Samuel Marketing Intel Lab");
+    lines.push("Submission Reference: " + submissionId);
     lines.push("");
     lines.push("— BUSINESS DETAILS —");
-    lines.push("Business name: " + data.businessName);
-    lines.push("Your name: " + data.yourName);
+    lines.push("Business name: " + d.businessName);
+    lines.push("Your name: " + d.yourName);
     if(L.businessTypeLabel !== "—") lines.push("Business type: " + L.businessTypeLabel);
-    lines.push("Location: " + data.location);
+    lines.push("Location: " + d.location);
     if(L.howLongLabel !== "—") lines.push("Operating for: " + L.howLongLabel);
-    if(data.website) lines.push("Website: " + data.website);
-    if(data.facebook) lines.push("Facebook: " + data.facebook);
-    if(data.instagram) lines.push("Instagram: " + data.instagram);
-    if(data.otherPage) lines.push("Other page: " + data.otherPage);
+    if(d.website) lines.push("Website: " + d.website);
+    if(d.facebook) lines.push("Facebook: " + d.facebook);
+    if(d.instagram) lines.push("Instagram: " + d.instagram);
+    if(d.otherPage) lines.push("Other page: " + d.otherPage);
     lines.push("");
     lines.push("— WHAT ARE WE MARKETING —");
-    lines.push("Priority offer: " + data.priorityOffer);
-    if(data.typicalPrice) lines.push("Typical price: " + data.typicalPrice);
+    lines.push("Priority offer: " + d.priorityOffer);
+    if(d.typicalPrice) lines.push("Typical price: " + d.typicalPrice);
     if(L.offerEstablishedLabel !== "—") lines.push("How established: " + L.offerEstablishedLabel);
     if(L.offerPromoLabel !== "—") lines.push("Considering a promo: " + L.offerPromoLabel);
-    if(data.offerPromo === "yes"){
-      if(data.offerDescribe) lines.push("Offer: " + data.offerDescribe);
-      if(data.offerPromoPrice) lines.push("Promo price: " + data.offerPromoPrice);
-      if(data.offerStartDate) lines.push("Start: " + data.offerStartDate);
-      if(data.offerEndDate) lines.push("End: " + data.offerEndDate);
-      if(data.offerTerms) lines.push("Terms: " + data.offerTerms);
+    if(d.offerPromo === "yes"){
+      if(d.offerDescribe) lines.push("Offer: " + d.offerDescribe);
+      if(d.offerPromoPrice) lines.push("Promo price: " + d.offerPromoPrice);
+      if(d.offerStartDate) lines.push("Start: " + d.offerStartDate);
+      if(d.offerEndDate) lines.push("End: " + d.offerEndDate);
+      if(d.offerTerms) lines.push("Terms: " + d.offerTerms);
     }
     lines.push("");
     lines.push("— BUSINESS OBJECTIVE —");
     lines.push("Primary goal: " + L.primaryGoalLabel);
     if(L.measureLabel !== "—") lines.push("Success looks like: " + L.measureLabel);
     if(L.knowBaselineLabel !== "—") lines.push("Know baseline: " + L.knowBaselineLabel);
-    if(data.baselineDetails) lines.push("Baseline details: " + data.baselineDetails);
+    if(d.baselineDetails) lines.push("Baseline details: " + d.baselineDetails);
     lines.push("");
     lines.push("— YOUR CUSTOMERS —");
-    if(data.buyerWho) lines.push("Who buys: " + data.buyerWho);
-    if(data.buyerWant) lines.push("Who to attract more: " + data.buyerWant);
+    if(d.buyerWho) lines.push("Who buys: " + d.buyerWho);
+    if(d.buyerWant) lines.push("Who to attract more: " + d.buyerWant);
     if(L.whyBuyLabel !== "—") lines.push("Why they buy: " + L.whyBuyLabel);
-    if(data.commonQuestions) lines.push("Common questions: " + data.commonQuestions);
+    if(d.commonQuestions) lines.push("Common questions: " + d.commonQuestions);
     if(L.blockersLabel !== "—") lines.push("What stops them: " + L.blockersLabel);
     lines.push("");
     lines.push("— WHY CHOOSE YOU —");
-    if(data.whyChooseYou) lines.push("Why they choose you: " + data.whyChooseYou);
-    if(data.complimentsMost) lines.push("Most complimented: " + data.complimentsMost);
-    if(data.competitors) lines.push("Competitors: " + data.competitors);
-    if(data.genuinelyDifferent) lines.push("What's different: " + data.genuinelyDifferent);
+    if(d.whyChooseYou) lines.push("Why they choose you: " + d.whyChooseYou);
+    if(d.complimentsMost) lines.push("Most complimented: " + d.complimentsMost);
+    if(d.competitors) lines.push("Competitors: " + d.competitors);
+    if(d.genuinelyDifferent) lines.push("What's different: " + d.genuinelyDifferent);
     lines.push("");
     lines.push("— PROOF & CREDIBILITY —");
     if(L.proofLabel !== "—") lines.push("Usable proof: " + L.proofLabel);
-    if(data.proofDescribe) lines.push("Strongest proof: " + data.proofDescribe);
+    if(d.proofDescribe) lines.push("Strongest proof: " + d.proofDescribe);
     lines.push("");
     lines.push("— MARKETING & JOURNEY —");
     if(L.channelsActiveLabel !== "—") lines.push("Active channels: " + L.channelsActiveLabel);
     if(L.paidAdsBeforeLabel !== "—") lines.push("Paid ads before: " + L.paidAdsBeforeLabel);
-    if(data.paidAdsBefore === "yes"){
+    if(d.paidAdsBefore === "yes"){
       if(L.paidAdsWhereLabel !== "—") lines.push("Where: " + L.paidAdsWhereLabel);
       if(L.paidAdsResultsLabel !== "—") lines.push("Results: " + L.paidAdsResultsLabel);
     }
     if(L.purchaseLabel !== "—") lines.push("Completes purchase via: " + L.purchaseLabel);
     if(L.responseTimeLabel !== "—") lines.push("Response time: " + L.responseTimeLabel);
     if(L.difficultyLabel !== "—") lines.push("Journey difficulty: " + L.difficultyLabel);
-    if(data.difficultyWhere) lines.push("Where: " + data.difficultyWhere);
+    if(d.difficultyWhere) lines.push("Where: " + d.difficultyWhere);
     lines.push("");
     lines.push("— OPERATIONS & CAPACITY —");
     if(L.capacityLabel !== "—") lines.push("Capacity: " + L.capacityLabel);
@@ -1299,38 +1452,38 @@
     if(L.appointmentsLabel !== "—") lines.push("Appointments required: " + L.appointmentsLabel);
     if(L.leadTimeLabel !== "—") lines.push("Lead time: " + L.leadTimeLabel);
     if(L.limitationsLabel !== "—") lines.push("Limitations: " + L.limitationsLabel);
-    if(data.dontPromote) lines.push("Don't promote heavily: " + data.dontPromote);
+    if(d.dontPromote) lines.push("Don't promote heavily: " + d.dontPromote);
     lines.push("");
     lines.push("— BRAND, ASSETS & VERIFIED DETAILS —");
     if(L.assetsLabel !== "—") lines.push("Assets available: " + L.assetsLabel);
     if(L.brandFeelLabel !== "—") lines.push("Brand should feel: " + L.brandFeelLabel);
-    if(data.notUsed) lines.push("Not to use: " + data.notUsed);
-    lines.push("Verified business name: " + data.verifiedBusinessName);
-    lines.push("WhatsApp: " + data.verifiedWhatsapp);
-    if(data.verifiedPhone) lines.push("Phone: " + data.verifiedPhone);
-    lines.push("Email: " + data.verifiedEmail);
-    if(data.verifiedWebsite) lines.push("Website: " + data.verifiedWebsite);
-    if(data.verifiedAddress) lines.push("Address/area: " + data.verifiedAddress);
-    if(data.verifiedHours) lines.push("Hours: " + data.verifiedHours);
-    if(data.verifiedPrices) lines.push("Prices: " + data.verifiedPrices);
-    if(data.verifiedOfferTerms) lines.push("Offer terms: " + data.verifiedOfferTerms);
-    if(data.verifiedDates) lines.push("Important dates: " + data.verifiedDates);
-    if(data.verifiedRestrictions) lines.push("Restrictions: " + data.verifiedRestrictions);
-    if(data.verifiedCredentials) lines.push("Credentials: " + data.verifiedCredentials);
-    if(data.verifiedGuarantees) lines.push("Guarantees: " + data.verifiedGuarantees);
-    if(data.verifiedDisclaimers) lines.push("Disclaimers: " + data.verifiedDisclaimers);
+    if(d.notUsed) lines.push("Not to use: " + d.notUsed);
+    lines.push("Verified business name: " + d.verifiedBusinessName);
+    lines.push("WhatsApp: " + d.verifiedWhatsapp);
+    if(d.verifiedPhone) lines.push("Phone: " + d.verifiedPhone);
+    lines.push("Email: " + d.verifiedEmail);
+    if(d.verifiedWebsite) lines.push("Website: " + d.verifiedWebsite);
+    if(d.verifiedAddress) lines.push("Address/area: " + d.verifiedAddress);
+    if(d.verifiedHours) lines.push("Hours: " + d.verifiedHours);
+    if(d.verifiedPrices) lines.push("Prices: " + d.verifiedPrices);
+    if(d.verifiedOfferTerms) lines.push("Offer terms: " + d.verifiedOfferTerms);
+    if(d.verifiedDates) lines.push("Important dates: " + d.verifiedDates);
+    if(d.verifiedRestrictions) lines.push("Restrictions: " + d.verifiedRestrictions);
+    if(d.verifiedCredentials) lines.push("Credentials: " + d.verifiedCredentials);
+    if(d.verifiedGuarantees) lines.push("Guarantees: " + d.verifiedGuarantees);
+    if(d.verifiedDisclaimers) lines.push("Disclaimers: " + d.verifiedDisclaimers);
     lines.push("");
     lines.push("— BUDGET —");
     if(L.budgetPlanLabel !== "—") lines.push("Paid advertising planned: " + L.budgetPlanLabel);
     if(L.budgetRangeLabel !== "—") lines.push("Approx. ad spend: " + L.budgetRangeLabel);
     lines.push("");
     lines.push("— FINAL NOTES —");
-    lines.push(data.finalNotes ? data.finalNotes : "Not specified");
+    lines.push(d.finalNotes ? d.finalNotes : "Not specified");
     lines.push("");
     lines.push("— CLIENT CONFIRMATION —");
-    lines.push("Accuracy confirmed: " + (data.confirmAccurate ? "Yes" : "No"));
-    lines.push("Materials permission confirmed: " + (data.confirmPermission ? "Yes" : "No"));
-    lines.push("No-guarantee understanding confirmed: " + (data.confirmNoGuarantee ? "Yes" : "No"));
+    lines.push("Accuracy confirmed: " + (d.confirmAccurate ? "Yes" : "No"));
+    lines.push("Materials permission confirmed: " + (d.confirmPermission ? "Yes" : "No"));
+    lines.push("No-guarantee understanding confirmed: " + (d.confirmNoGuarantee ? "Yes" : "No"));
 
     return lines.join("\n");
   }
@@ -1339,7 +1492,7 @@
   var copyBtn = document.getElementById("copyBtn");
   var copyHint = document.getElementById("copyHint");
   copyBtn.addEventListener("click", function(){
-    var text = buildFullText();
+    var text = buildFullText(getOrCreateSubmissionId());
     function done(ok){
       copyBtn.classList.toggle("copied", ok);
       copyHint.textContent = ok ? "Copied — you can paste this into an email or document." : "Couldn't copy automatically — select and copy the review above manually.";
@@ -1356,25 +1509,41 @@
   var submitError = document.getElementById("submitError");
   function showSubmitError(msg){ submitError.textContent = msg; submitError.classList.add("show"); }
   function hideSubmitError(){ submitError.classList.remove("show"); }
+  var isSubmitting = false;
 
-  function showThankYou(viaEmailClient){
+  function showThankYou(viaEmailClient, refId){
     document.querySelectorAll('.step[data-step]').forEach(function(s){ s.classList.remove("active"); });
     document.getElementById("thankyouStep").classList.add("active");
     document.getElementById("thankyouEmailNote").style.display = viaEmailClient ? "block" : "none";
+    var refEl = document.getElementById("thankyouReference");
+    if(refEl) refEl.textContent = "Reference: " + refId;
     controlbar.style.display = "none";
     window.scrollTo({top:0, behavior:"smooth"});
+    // Only clear the saved draft once the intake has actually been
+    // delivered (confirmed Formspree success, or the mailto client was
+    // handed off as a last resort) — never on a failed attempt.
     try{ localStorage.removeItem(STORAGE_KEY); localStorage.removeItem(STORAGE_KEY + "_step"); }catch(e){}
+    clearSubmissionId();
   }
 
-  function openMailtoFallback(){
-    var subject = "New Client Marketing Intake — " + (data.businessName || "New submission");
-    var body = buildFullText();
-    var url = "mailto:" + DEST_EMAIL + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(body);
+  function openMailtoFallback(text, refId){
+    var subject = "New Client Marketing Intake — " + (data.businessName || "New submission") + " — " + refId;
+    var url = "mailto:" + DEST_EMAIL + "?subject=" + encodeURIComponent(subject) + "&body=" + encodeURIComponent(text);
     window.location.href = url;
   }
 
   submitBtn.addEventListener("click", function(){
+    if(isSubmitting) return;
     hideSubmitError();
+
+    // Silent honeypot check — bots that fill hidden fields get a generic
+    // failure and nothing is sent anywhere. No visible clue is given.
+    var hpEl = document.getElementById("hp_field");
+    if(hpEl && hpEl.value){
+      showSubmitError("We couldn't submit that. Please try again or contact us directly.");
+      return;
+    }
+
     for(var s = 1; s <= 11; s++){
       if(!validateStep(s)){
         goToStep(s);
@@ -1382,23 +1551,32 @@
       }
     }
 
+    var refId = getOrCreateSubmissionId();
+    var sanitized = sanitizeData(data);
+    var fullText = buildFullText(refId);
+
     var payload = {
-      _subject: "New Client Marketing Intake — " + data.businessName,
-      _replyto: data.verifiedEmail,
-      business_name: data.businessName,
-      submitted_by: data.yourName,
+      submission_id: refId,
+      _subject: "New Client Marketing Intake — " + sanitized.businessName + " — " + refId,
+      _replyto: sanitized.verifiedEmail,
+      business_name: sanitized.businessName,
+      submitted_by: sanitized.yourName,
       submitted_at: new Date().toISOString(),
-      full_intake: buildFullText()
+      full_intake: fullText
     };
-    for(var key in data){ if(payload[key] === undefined) payload[key] = data[key]; }
+    for(var key in sanitized){ if(payload[key] === undefined) payload[key] = sanitized[key]; }
 
     if(!endpointConfigured()){
       trySheetsSubmit(payload);
-      openMailtoFallback();
-      showThankYou(true);
+      openMailtoFallback(fullText, refId);
+      // Formspree isn't configured, so this can't be a "confirmed"
+      // delivery — but the client has handed the draft to their own
+      // email app, which is the best this page can do at that point.
+      showThankYou(true, refId);
       return;
     }
 
+    isSubmitting = true;
     trySheetsSubmit(payload);
 
     submitBtn.disabled = true;
@@ -1410,17 +1588,22 @@
       headers: { "Content-Type": "application/json", "Accept": "application/json" },
       body: JSON.stringify(payload)
     }).then(function(res){
+      isSubmitting = false;
       if(res.ok){
-        showThankYou(false);
+        // Success screen and draft-clearing only ever happen from here —
+        // a confirmed Formspree response — never from the Sheets call,
+        // which the browser can't reliably read the result of.
+        showThankYou(false, refId);
       } else {
         submitBtn.disabled = false;
         submitBtn.innerHTML = originalHTML;
-        showSubmitError("We couldn't send that automatically. You can try again, or use \u201CCopy full intake to clipboard\u201D above and paste it into an email to jamal.s.samuel@outlook.com.");
+        showSubmitError("We couldn't send that automatically. Your answers are still saved on this device — you can try again, or use \u201CCopy full intake to clipboard\u201D above and paste it into an email to jamal.s.samuel@outlook.com. Reference: " + refId);
       }
     }).catch(function(){
+      isSubmitting = false;
       submitBtn.disabled = false;
       submitBtn.innerHTML = originalHTML;
-      showSubmitError("We couldn't reach the email service. You can try again, or use \u201CCopy full intake to clipboard\u201D above and paste it into an email to jamal.s.samuel@outlook.com.");
+      showSubmitError("We couldn't reach the email service. Your answers are still saved on this device — you can try again, or use \u201CCopy full intake to clipboard\u201D above and paste it into an email to jamal.s.samuel@outlook.com. Reference: " + refId);
     });
   });
 
